@@ -23,7 +23,7 @@ func TestAdd(t *testing.T) {
 		got := calculator.Add(tc.a, tc.b)
 		if tc.want != got {
 			t.Errorf("want %f, got %f", tc.want, got)
-		}else if got > 0 {
+		} else if got > 0 {
 			fmt.Printf("\n%f plus %f sum to a positive number", tc.a, tc.b)
 		} else {
 			fmt.Printf("\n%f plus %f sum to a negative number", tc.a, tc.b)
@@ -90,12 +90,12 @@ func TestDivision(t *testing.T) {
 
 	testCases := []testCase {
 		{a: 4, b: 2, want: 2, errExpected: false},
+		{a: 4, b: 0, want: 0, errExpected: true},
 		{a: 10, b: 10, want:1, errExpected: false},
 	}
 
 	for _, tc := range testCases {
 		got, err:= calculator.Divide(tc.a, tc.b)
-	//	print("err: ", err)
 		if tc.want != got && err != nil {
 			t.Errorf("want %f, got %f", tc.want, got)	
 		}

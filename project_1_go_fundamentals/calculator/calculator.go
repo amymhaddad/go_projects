@@ -1,6 +1,8 @@
 // Package calculator provides a library for // simple calculations in Go.
 package calculator
 
+import "fmt"
+
 func Add(a, b float64) float64 {
 	return a + b
 }
