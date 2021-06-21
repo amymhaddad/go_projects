@@ -98,53 +98,26 @@ func TestMultiply(t *testing.T) {
 func TestDivision(t *testing.T) {
 	t.Parallel()
 
-	type testCase struct {
+	testCases := []struct {
 		a, b float64
 		want float64
 		errExpected bool
-	}
-
-	testCases := []testCase {
-
+	}{
 		{a: 3, b: 3, want:1, errExpected: false},
 		{a: 3, b: 0, want: 999, errExpected: true},
-		// //Use an unlikely value for "want" bc If I see this value then I know something went wrong with the test
-		// {a: 4, b: 0, want: 99, errExpected: true},
-	
 	}
-
-
+	
 	for _, tc := range testCases {
-		got, err:= calculator.Divide(tc.a, tc.b)
-		//Did i rec an err? Was that err val nil or not?
-		//create a var to determine if there was an error, then is val is T. Otherwise there was NO error, so this val is false
-		errRecieved := (err != nil)
+		got, err := calculator.Divide(tc.a, tc.b)
+		errReceived := (err != nil)
 
-		//IF the rec'd output doens't match my expectations, then raise an error. 
-		//I always need to check what the program returns against my expectatations
-		//This syntax checks 2 things: If there was an error and I didn't expect one OR I didn't get an error and I exptedted one. 
-		//So I'm looking to see if there's a mismatch between the error status that I rec'd (via: errReceived) and the error status that I expected (via: tc.errExpected)
-		if errRecieved != tc.errExpected {
-			//Don't move to any other tests
-			t.Fatalf("Divide (%.1f, %.1f): unexpected error status: %v ", tc.a, tc.b, err)	
-		} 
-
-		//alt: if !tc.errExpected && tc.want != got  -->same thing: checking my expectations
-		//Only want to compare want and got (via: && tc.want != got) when we don't expect an error
-		//Recall: if first val is T, then return it. Otherwise move on to the next value.
-		if err == nil && tc.want != got  {
-			t.Errorf("want %f, got %f", tc.want, got)	
+		if errReceived != tc.errExpected {
+			t.Fatalf("Division (%.1f, %.1f): unexpected error %v", tc.a, tc.b, err)
 		}
-        
-	}	
+
+		if err == nil && tc.want != got {
+			t.Errorf("want %f, got %f", tc.want, got)
+		}
+	}
 }
-
-//If just printing a message: t.Error() 
-//If printing w/values: t.Errorf()
-/*
-Don't move to any other tests:
-t.Fatalf("Divide (%.1f, %.1f): want error, got nil", tc.a, tc.b)	
-%v - prints out any val of any type. So I can use it to print the value of the error
-
-*/
 
