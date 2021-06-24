@@ -13,24 +13,35 @@ func closeEnough(a, b, tolerance float64) bool {
 	return math.Abs(a-b) <= tolerance
 }
 
+/*
+This syntax doesn't work: 	val1 := rand.Float64()
+Here's why:
+Remove the colon : from the second statement as you are assigning a new value to existing variable.
+myArray = [...]int{11,12,14}
+colon : is used when you perform the short declaration and assignment for the first time as you are doing in your first statement i.e. myArray  :=[...]int{12,14,26}.
+*/
+func generateRandomValues() (val1, val2, total float64) {
+	rand.Seed(time.Now().UnixNano())
+	val1 = rand.Float64()
+	val2 = rand.Float64()
+	total = val1 + val2
+	return val1, val2, total
+}
+
 func TestAdd(t *testing.T) {
 	t.Parallel()
 
-	rand.Seed(time.Now().UnixNano())
-	//make as part of function
-	v1 := rand.Float64()
-	v2 := rand.Float64()
-	total := v1 + v2
+
+	val1, val2, total := generateRandomValues()
+
 
 	type testCase struct {
         a, b float64
         want float64
     }
 	testCases := []testCase{
-		//Ask about using multiple random values -- why error out? Each time I use v1 and v2 I should get a random number?
-		{ a: v1, b: v2, want: total},
-		//{a: v1, b: v2, want: total },
-		 { a: 5, b: 0, want: 5 },
+		{a: val1, b: val2, want: total},
+		{a: 5, b: 0, want: 5 },
 		{a: 0, b:0, want: 0},
 	}
 
