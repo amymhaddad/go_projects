@@ -152,23 +152,32 @@ func TestDivision(t *testing.T) {
 
 }
 
-// func TestSqRoot(t *testing.T) {
-// 	t.Parallel()
+func TestSqRoot(t *testing.T) {
+	t.Parallel()
 
-// 	testCases := []struct {
-// 		a float64
-// 		want float64 
-// 	}{
-// 		{a: 4, want: 2}, 
-// 		{a: 64, want: 8},
-// 	}
+	testCases := []struct {
+		a float64
+		want float64 
+		errExpected bool
+	}{
+		{a: 4, want: 2, errExpected: false}, 
+		{a: 64, want: 8, errExpected: false},
+		{a: 0, want: 0, errExpected: false},
+		{a: -64, want: 1111, errExpected: true},
+	}
 	
-// 	for _, tc := range testCases {
-// 		got := calculator.SqRoot(tc.a)
+	for _, tc := range testCases {
+		got, err := calculator.SqRoot(tc.a)
+		errReceived := err != nil
 
-// 		if got != tc.want {
-// 			fmt.Printf("want %f, got %f ", tc.want, got)
-// 		}	
-// 	}
-// }
+		if errReceived != tc.errExpected {
+			t.Fatalf("Square Root (%f) unexpected error: %v", tc.a, err)
+		}
+
+		if err == nil && tc.want != got {
+			t.Errorf("want: %f, got: %f ", tc.want, got)
+		}
+
+	}
+}
 

@@ -3,6 +3,7 @@ package calculator
 
 import (
 	"errors"
+	"math"
 	//"fmt"
 )
 
@@ -25,7 +26,10 @@ func Divide(a, b float64) (float64, error) {
 	return a/b, nil
 }
 
-// func SqRoot(a float) float64 {
-// 	return g
+func SqRoot(a float64) (float64, error) {
+	if a < 0 {
+		return 0, errors.New("Square root of negative number is an error ")
+	}	
+	return math.Sqrt(a), nil
 
-// }
+}
