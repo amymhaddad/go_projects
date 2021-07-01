@@ -13,9 +13,11 @@ type Book struct {
 	Price int
 	DiscountPercent int
 	Pages string
+	Title string 
 	//added a slice to allow multiple authors
 	Authors []string
 }
+
 
 const centsPerDollar = 100
 
@@ -43,13 +45,23 @@ func main() {
 	
 	bookAuthors(&book1)
 	
-	updatedBookPrice := netPrice(book1.Price, book1.DiscountPercent)
-	fmt.Println(updatedBookPrice)
+	// updatedBookPrice := netPrice(book1.Price, book1.DiscountPercent)
+	// fmt.Println(updatedBookPrice)
 
-	fmt.Println(book1.Authors)
+	//Create a slice of TYPE BOOK. Notice how I add to the slice of authors: Authors: []string{"amy"}},
+	books := []Book{
+		{Title: "Delightfully Uneventful Trip on the Orient Express"}, {Title: "One Hundred Years of Good Company", Authors: []string{"amy"}},
+		}
+	//2 ways to update the title 
+	//Option 1: modify AN INDIVIDUAL SLICE element by using it's index
+	books[0].Title = "Here and There"
+	//Option 2: Modify a FIELD from an individual element  
+	books[0] = Book{Title: "The life and times"}
 	
+	//Append a NEW element to a slice 
+	//newBook := Book{Title: "Grapes of Wrath"}
+	fmt.Println(books)
 
-	
 }
 
 
