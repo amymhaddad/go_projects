@@ -4,6 +4,8 @@ Add suitable fields to the Book struct to represent a book that is a member of a
 
 package main
 
+import "fmt"
+
 type Book struct {
 	Name string
 	Edition int
@@ -11,6 +13,8 @@ type Book struct {
 	Price int
 	DiscountPercent int
 	Pages string
+	//added a slice to allow multiple authors
+	Authors []string
 }
 
 const centsPerDollar = 100
@@ -23,6 +27,11 @@ func netPrice(price, discount int) int {
 	return int(newPrice)
 }
 
+func bookAuthors(book *Book)  {
+	book.Authors = append(book.Authors, "Sam")
+	book.Authors = append(book.Authors, "Tim")
+}
+
 func main() {
 	book1 := Book {
 		Name: "Data", 
@@ -32,8 +41,15 @@ func main() {
 		DiscountPercent: 2,
 	}
 	
+	bookAuthors(&book1)
+	
 	updatedBookPrice := netPrice(book1.Price, book1.DiscountPercent)
+	fmt.Println(updatedBookPrice)
 
+	fmt.Println(book1.Authors)
+	
+
+	
 }
 
 
