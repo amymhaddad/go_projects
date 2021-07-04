@@ -8,6 +8,11 @@ import (
 	"testing"
 	"time"
 )
+//Move the type out from each test 
+type testCase struct {
+	a, b float64
+	want float64
+}
 
 func closeEnough(a, b, tolerance float64) bool {
 	return math.Abs(a-b) <= tolerance
@@ -26,10 +31,10 @@ func TestAdd(t *testing.T) {
 
 	val1, val2, total := generateRandomValues()
 
-	type testCase struct {
-		a, b float64
-		want float64
-	}
+	// type testCase struct {
+	// 	a, b float64
+	// 	want float64
+	// }
 	testCases := []testCase{
 		{a: val1, b: val2, want: total},
 		{a: 5, b: 0, want: 5},

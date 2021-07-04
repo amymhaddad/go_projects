@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"math"
 	"os"
+	"regexp"
 	"strconv"
-	"strings"
 )
 
 type arithmeticExpression struct {
@@ -19,23 +19,34 @@ type arithmeticExpression struct {
 
 func parseExpression(expression string) *arithmeticExpression {
 	var expr arithmeticExpression
-	parsedExpression := strings.Split(expression, " ")
 
-	//don't rely on err to manage control flow 
-	for i, value := range parsedExpression {
+
+	re := regexp.MustCompile(`([0-9]+) (.) ([0-9]+)`)
+	result := re.FindStringSubmatch(expression)
+	
+	expr.num1 = strconv.ParseFloat(result[1], 64)
+	
+	for _, value := range result[1:] {
 		num, err := strconv.ParseFloat(value, 64)
-	//	fmt.Println("num: ", num)
-		if err == nil {
-			if i == 0 {
-				expr.num1 = num
-			} else {
-				expr.num2 = num
-			}
-
-		} else {
-			expr.operation = value
-		}
+		fmt.Println(num, err)
 	}
+	// parsedExpression := strings.Split(expression, " ")
+
+	// //don't rely on err to manage control flow 
+	// for i, value := range parsedExpression {
+	// 	num, err := strconv.ParseFloat(value, 64)
+	// //	fmt.Println("num: ", num)
+	// 	if err == nil {
+	// 		if i == 0 {
+	// 			expr.num1 = num
+	// 		} else {
+	// 			expr.num2 = num
+	// 		}
+
+	// 	} else {
+	// 		expr.operation = value
+	// 	}
+	// }
 	return &expr
 }
 
@@ -53,7 +64,7 @@ func calcExpression(expression *arithmeticExpression) {
 		print(fmt.Println("Invalid expression"))
 	}
 }
-
+//os.Exit() -- use so program doensn't move forward. Panic prints out the stack trace 
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Print("Enter an arithmetic expression: ")
@@ -61,7 +72,6 @@ func main() {
 
 	if scanner.Err() != nil {
 		fmt.Println("Error: ", scanner.Err())
-		//os.Exit(2)
 	}
 	userExpression := scanner.Text()
 
