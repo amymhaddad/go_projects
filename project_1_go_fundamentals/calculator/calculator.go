@@ -1,5 +1,5 @@
 // Package calculator provides a library for // simple calculations in Go.
-package main
+package calculator
 
 import (
 	"bufio"
@@ -28,13 +28,7 @@ func parseExpression(expression string) *arithmeticExpression {
 	expr.num1 = firstNum
 	expr.num2 = secondNum
 	expr.operation = result[2]
-	
-	
-	for i, value := range result[1:] {
-		//num, _ := strconv.ParseFloat(value, 64)
-		fmt.Println("\nindex: ", i, "\nvalue: ", value)
-	}
-	
+
 	return &expr
 }
 
@@ -52,7 +46,7 @@ func calcExpression(expression *arithmeticExpression) {
 		print(fmt.Println("Invalid expression"))
 	}
 }
-//os.Exit() -- use so program doensn't move forward. Panic prints out the stack trace 
+
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Print("Enter an arithmetic expression: ")

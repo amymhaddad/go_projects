@@ -8,10 +8,11 @@ import (
 	"testing"
 	"time"
 )
-//Move the type out from each test 
+
 type testCase struct {
-	a, b float64
-	want float64
+	a, b        float64
+	want        float64
+	errExpected bool
 }
 
 func closeEnough(a, b, tolerance float64) bool {
@@ -31,10 +32,6 @@ func TestAdd(t *testing.T) {
 
 	val1, val2, total := generateRandomValues()
 
-	// type testCase struct {
-	// 	a, b float64
-	// 	want float64
-	// }
 	testCases := []testCase{
 		{a: val1, b: val2, want: total},
 		{a: 5, b: 0, want: 5},
@@ -60,11 +57,6 @@ func TestAdd(t *testing.T) {
 func TestSubtract(t *testing.T) {
 	t.Parallel()
 
-	type testCase struct {
-		a, b float64
-		want float64
-	}
-
 	testCases := []testCase{
 		{a: 4, b: 2, want: 2},
 		{a: -6, b: 1, want: -7},
@@ -88,11 +80,6 @@ func TestSubtract(t *testing.T) {
 
 func TestMultiply(t *testing.T) {
 	t.Parallel()
-
-	type testCase struct {
-		a, b float64
-		want float64
-	}
 
 	testCases := []testCase{
 		{a: 8, b: 8, want: 64},
@@ -118,11 +105,7 @@ func TestMultiply(t *testing.T) {
 func TestDivision(t *testing.T) {
 	t.Parallel()
 
-	testCases := []struct {
-		a, b        float64
-		want        float64
-		errExpected bool
-	}{
+	testCases := []testCase{
 		{a: 3, b: 3, want: 1, errExpected: false},
 		{a: 3, b: 0, want: 999, errExpected: true},
 		{a: 1, b: 3, want: 0.333333, errExpected: false},
@@ -148,11 +131,7 @@ func TestDivision(t *testing.T) {
 func TestSqRoot(t *testing.T) {
 	t.Parallel()
 
-	testCases := []struct {
-		a           float64
-		want        float64
-		errExpected bool
-	}{
+	testCases := []testCase{
 		{a: 4, want: 2, errExpected: false},
 		{a: 64, want: 8, errExpected: false},
 		{a: 0, want: 0, errExpected: false},
