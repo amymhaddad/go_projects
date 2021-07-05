@@ -20,33 +20,21 @@ type arithmeticExpression struct {
 func parseExpression(expression string) *arithmeticExpression {
 	var expr arithmeticExpression
 
-
 	re := regexp.MustCompile(`([0-9]+) (.) ([0-9]+)`)
 	result := re.FindStringSubmatch(expression)
+
+	firstNum, _ := strconv.ParseFloat(result[1], 64)
+	secondNum, _ := strconv.ParseFloat(result[3], 64)
+	expr.num1 = firstNum
+	expr.num2 = secondNum
+	expr.operation = result[2]
 	
-	expr.num1 = strconv.ParseFloat(result[1], 64)
 	
-	for _, value := range result[1:] {
-		num, err := strconv.ParseFloat(value, 64)
-		fmt.Println(num, err)
+	for i, value := range result[1:] {
+		//num, _ := strconv.ParseFloat(value, 64)
+		fmt.Println("\nindex: ", i, "\nvalue: ", value)
 	}
-	// parsedExpression := strings.Split(expression, " ")
-
-	// //don't rely on err to manage control flow 
-	// for i, value := range parsedExpression {
-	// 	num, err := strconv.ParseFloat(value, 64)
-	// //	fmt.Println("num: ", num)
-	// 	if err == nil {
-	// 		if i == 0 {
-	// 			expr.num1 = num
-	// 		} else {
-	// 			expr.num2 = num
-	// 		}
-
-	// 	} else {
-	// 		expr.operation = value
-	// 	}
-	// }
+	
 	return &expr
 }
 
