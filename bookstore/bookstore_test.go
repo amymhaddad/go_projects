@@ -3,7 +3,9 @@ package bookstore_test
 import (
 	"bookstore"
 	"fmt"
+	"math/rand"
 	"testing"
+	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -40,26 +42,21 @@ func TestGetAllBooks(t *testing.T) {
 	}
 }
 
-/*
-Questions:
+//Ask about how to test "want" is a unique number -- a nubmer that's not in my slice of used numbers
+func NewID(t *testing.T) {
+	t.Parallel()
 
-1. why is got returning all values 2 times when I input data into the GetAllBooks() funcition
-got := bookstore.GetAllBooks()
+	rand.Seed(time.Now().UnixNano())
+	randomNumber := rand.Intn(10)
 
-2. Do I have this right:
-//Create a slice of type Book -- in bookstore.go file
-var Books = []Book{}
+	for _, num := range bookstore.UsedIDs {
+		if num == randomNumber {
+			randomNumber = rand.Intn(10)
 
-//Create a slice of type Book -- in test file -- and add books to it
-bookstore.Books = []bookstore.Book{book1, book2}
+		}
+	}
 
-3. Is my test correct? It passes but why don't I see values for want and got ?
-
-4. Ask about TestBook() -- what's it doing?
-
-5. Are my fucntions correct in bookstore.go?
-
-*/
+}
 
 func TestGetBookDetails(t *testing.T) {
 	t.Parallel()
