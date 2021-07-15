@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// Book blah
+//Book contains elements of a book
 type Book struct {
 	Title       string
 	Author      string
@@ -21,34 +21,51 @@ var bookIds = make(map[int]bool)
 // Books creates a slice of type Book
 var Books = []Book{}
 
+//GetAllBooks returns a slice of Books
 func GetAllBooks() []Book {
 	return Books
 }
 
+//GetBookDetails returns a slice of Books
 func GetBookDetails() []Book {
 	return Books
 }
 
-//ask:
-//Bc dealing w/small nums and letters it makes sense to use bytes -- not runes
-
-func NewID()  {
+//NewId returns a book id
+func NewID() string {
 	rand.Seed(time.Now().UnixNano())
 
-	letters := "abcdefghijklmnopqrstuvwxyz"
-	var arr [2]byte
-	index := rand.Intn(25)
+	id := make([]byte, 2)
+	numIndex := rand.Intn(9)
+	letterIndex := rand.Intn(25)
 
-	num := '0' + index
-	letter := letters[index] + 'a'
+	num := '0' + numIndex
+	letter := letterIndex + 'a'
+	fmt.Println(num, letter)
 
-	arr[0] = byte(num)
-	arr[1] = byte(letter)
-	//return string(arr)
-	
+	id[0] = byte(num)
+	id[1] = byte(letter)
+	return string(id)
 
 }
 
+func genIds() {
+	results = make(map[string]bool)
+	fmt.Println("r", results)
+
+	for i := 0; i < 10; i++ {
+		id := NewID()
+
+		value, ok := results[id]
+		if !ok {
+			fmt.Println("err")
+		} else {
+			results[id] = true
+		}
+	}
+	fmt.Println(results)
+}
+
 func main() {
-	fmt.Println(NewID)
+	genIds()
 }
