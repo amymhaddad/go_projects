@@ -42,7 +42,6 @@ func TestGetAllBooks(t *testing.T) {
 	}
 }
 
-//Ask about how to test "want" is a unique number -- a nubmer that's not in my slice of used numbers
 func NewID(t *testing.T) {
 	t.Parallel()
 

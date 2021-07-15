@@ -31,7 +31,7 @@ func GetBookDetails() []Book {
 	return Books
 }
 
-//NewId returns a book id
+//NewID returns a book id
 func NewID() string {
 	rand.Seed(time.Now().UnixNano())
 
@@ -50,14 +50,13 @@ func NewID() string {
 }
 
 func genIds() {
-	results = make(map[string]bool)
+	results := map[string]bool{}
 	fmt.Println("r", results)
 
 	for i := 0; i < 10; i++ {
 		id := NewID()
-
-		value, ok := results[id]
-		if !ok {
+		_, ok := results[id]
+		if ok {
 			fmt.Println("err")
 		} else {
 			results[id] = true
