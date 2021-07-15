@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"reflect"
 	"time"
 )
 
@@ -15,20 +16,35 @@ type Book struct {
 	ID          string
 }
 
-//keep outside so bookIds isn't
-var bookIds = make(map[int]bool)
-
 // Books creates a slice of type Book
 var Books = []Book{}
 
 //GetAllBooks returns a slice of Books
 func GetAllBooks() []Book {
+	book1 := Book{ID: "Book1", Title: "Problem Solving for Programmers", Author: "Amy M Haddad", Discription: "bbbb"}
+	book2 := Book{Title: "Learn to PS", Author: "Amy M Haddad", Discription: "aaaaaa"}
+
+	Books = append(Books, book1)
+	Books = append(Books, book2)
 	return Books
 }
 
 //GetBookDetails returns a slice of Books
-func GetBookDetails() []Book {
-	return Books
+func GetBookDetails(bookID string){
+	allBooks := GetAllBooks()
+	for _, book := range allBooks {
+		if book.ID == bookID {
+			reflectVal := reflect.ValueOf(book)
+			values := make([]interface{}, reflectVal.NumField())
+			for i := 0; i < reflectVal.NumField(); i++ {
+				values[i] = reflectVal.Field(i).Interface()
+			}
+
+			for _, value := range values {
+				fmt.Println(value)	
+			}
+		}
+	}
 }
 
 //NewID returns a book id
@@ -49,22 +65,20 @@ func NewID() string {
 
 }
 
-func genIds() {
-	results := map[string]bool{}
-	fmt.Println("r", results)
-
-	for i := 0; i < 10; i++ {
-		id := NewID()
-		_, ok := results[id]
-		if ok {
-			fmt.Println("err")
-		} else {
-			results[id] = true
-		}
-	}
-	fmt.Println(results)
-}
-
+// func genIds() {
+// 	results := map[string]bool{}
+//
+// 	for i := 0; i < 10; i++ {
+// 		id := NewID()
+// 		_, ok := results[id]
+// 		if ok {
+// 			fmt.Println("err")
+// 		} else {
+// 			results[id] = true
+// 		}
+// 	}
+// }
+//
 func main() {
-	genIds()
+	GetBookDetails("Book1")
 }

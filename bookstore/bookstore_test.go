@@ -3,9 +3,7 @@ package bookstore_test
 import (
 	"bookstore"
 	"fmt"
-	"math/rand"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -45,13 +43,15 @@ func TestGetAllBooks(t *testing.T) {
 func NewID(t *testing.T) {
 	t.Parallel()
 
-	rand.Seed(time.Now().UnixNano())
-	randomNumber := rand.Intn(10)
+	results := map[string]bool{}
 
-	for _, num := range bookstore.UsedIDs {
-		if num == randomNumber {
-			randomNumber = rand.Intn(10)
-
+	for i := 0; i < 10; i++ {
+		id := bookstore.NewID()
+		_, ok := results[id]
+		if ok {
+			t.Errorf("Invalid id: id already exists.")
+		} else {
+			results[id] = true
 		}
 	}
 
