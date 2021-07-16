@@ -21,11 +21,13 @@ var Books = []Book{}
 
 //GetAllBooks returns a slice of Books
 func GetAllBooks() []Book {
-	book1 := Book{ID: "Book1", Title: "Problem Solving for Programmers", Author: "Amy M Haddad", Discription: "bbbb"}
-	book2 := Book{Title: "Learn to PS", Author: "Amy M Haddad", Discription: "aaaaaa"}
+	book1 := Book{ID: "Book1", Title: "Problem Solving for Programmers", Author: "Amy Haddad", Discription: "bbbb"}
+	book2 := Book{Title: "Learn to PS", Author: "Amy Haddad", Discription: "aaaaaa"}
+	book3 := Book{Title: "Travel 101", Author: "John Smith", Discription: "aaaaaa"}
 
 	Books = append(Books, book1)
 	Books = append(Books, book2)
+	Books = append(Books, book3)
 	return Books
 }
 
@@ -45,6 +47,19 @@ func GetBookDetails(bookID string){
 			}
 		}
 	}
+}
+
+func GetAllByAuthor(name string) []string {
+	allBooks := GetAllBooks()
+
+	var booksWritten []string
+	for _, book := range allBooks{
+		if book.Author == name {
+			booksWritten = append(booksWritten, book.Title)
+		}
+	}
+	return booksWritten
+
 }
 
 //NewID returns a book id
@@ -80,5 +95,5 @@ func NewID() string {
 // }
 //
 func main() {
-	GetBookDetails("Book1")
+	fmt.Println(GetAllByAuthor("Amy Haddad"))
 }
