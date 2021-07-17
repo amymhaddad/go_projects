@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"math/rand"
-	"reflect"
+	"strconv"
 	"time"
 )
 
@@ -11,7 +11,7 @@ import (
 type Book struct {
 	Title       string
 	Author      string
-	Discription string
+	Description string
 	PriceCents  int
 	ID          string
 }
@@ -21,39 +21,37 @@ var Books = []Book{}
 
 //GetAllBooks returns a slice of Books
 func GetAllBooks() []Book {
-	book1 := Book{ID: "Book1", Title: "Problem Solving for Programmers", Author: "Amy Haddad", Discription: "bbbb"}
-	book2 := Book{Title: "Learn to PS", Author: "Amy Haddad", Discription: "aaaaaa"}
-	book3 := Book{Title: "Travel 101", Author: "John Smith", Discription: "aaaaaa"}
+	book1 := Book{ID: "Book1", Title: "Problem Solving for Programmers", Author: "Amy Haddad", Description: "bbbb"}
+	book2 := Book{Title: "Learn to PS", Author: "Amy Haddad", Description: "aaaaaa"}
+	book3 := Book{Title: "Travel 101", Author: "John Smith", Description: "aaaaaa"}
 
-	Books = append(Books, book1)
-	Books = append(Books, book2)
-	Books = append(Books, book3)
+	Books = append(Books, book1, book2, book3)
 	return Books
 }
 
+//return a string using sprintf -- formats a string via %s
+//use book.fieldName -- instead of reflectVal...
 //GetBookDetails returns a slice of Books
-func GetBookDetails(bookID string){
+func GetBookDetails(bookID string) string {
 	allBooks := GetAllBooks()
-	for _, book := range allBooks {
-		if book.ID == bookID {
-			reflectVal := reflect.ValueOf(book)
-			values := make([]interface{}, reflectVal.NumField())
-			for i := 0; i < reflectVal.NumField(); i++ {
-				values[i] = reflectVal.Field(i).Interface()
-			}
 
-			for _, value := range values {
-				fmt.Println(value)	
-			}
+	for _, book := range allBooks {
+	
+		if book.ID == bookID {
+			return fmt.Sprintf("\nTitle: %s \nAuthor: %s \nDescription: %s \nPriceCents: %s \nID: %s", book.Title, book.Author, book.Description, strconv.Itoa(book.PriceCents), book.ID)
+			//fmt.Sprintf("%s", book.ID)
 		}
+
 	}
+	return "amuy"
+	
 }
 
 func GetAllByAuthor(name string) []string {
 	allBooks := GetAllBooks()
 
 	var booksWritten []string
-	for _, book := range allBooks{
+	for _, book := range allBooks {
 		if book.Author == name {
 			booksWritten = append(booksWritten, book.Title)
 		}
@@ -80,20 +78,9 @@ func NewID() string {
 
 }
 
-// func genIds() {
-// 	results := map[string]bool{}
-//
-// 	for i := 0; i < 10; i++ {
-// 		id := NewID()
-// 		_, ok := results[id]
-// 		if ok {
-// 			fmt.Println("err")
-// 		} else {
-// 			results[id] = true
-// 		}
-// 	}
-// }
-//
 func main() {
-	fmt.Println(GetAllByAuthor("Amy Haddad"))
+	a := GetBookDetails("Book1")
+	fmt.Println(a)
+	//fmt.Println(GetAllByAuthor("Amy Haddad"))
+
 }
