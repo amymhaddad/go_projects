@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -29,25 +30,23 @@ func GetAllBooks() []Book {
 	return Books
 }
 
-//return a string using sprintf -- formats a string via %s
-//use book.fieldName -- instead of reflectVal...
-//GetBookDetails returns a slice of Books
+//GetBookDetails returns a string of book details
 func GetBookDetails(bookID string) string {
 	allBooks := GetAllBooks()
 
 	for _, book := range allBooks {
 	
 		if book.ID == bookID {
-			return fmt.Sprintf("\nTitle: %s \nAuthor: %s \nDescription: %s \nPriceCents: %s \nID: %s", book.Title, book.Author, book.Description, strconv.Itoa(book.PriceCents), book.ID)
-			//fmt.Sprintf("%s", book.ID)
+			return fmt.Sprintf("Title: %s \nAuthor: %s \nDescription: %s \nPriceCents: %s \nID: %s", book.Title, book.Author, book.Description, strconv.Itoa(book.PriceCents), book.ID)
 		}
 
 	}
-	return "amuy"
+	return "Book is not found"
 	
 }
 
-func GetAllByAuthor(name string) []string {
+//GetAllByAuthor returns all of the books written by an author
+func GetAllByAuthor(name string) string {
 	allBooks := GetAllBooks()
 
 	var booksWritten []string
@@ -56,7 +55,8 @@ func GetAllByAuthor(name string) []string {
 			booksWritten = append(booksWritten, book.Title)
 		}
 	}
-	return booksWritten
+	
+	return strings.Join(booksWritten, "\n")
 
 }
 
@@ -79,8 +79,8 @@ func NewID() string {
 }
 
 func main() {
-	a := GetBookDetails("Book1")
-	fmt.Println(a)
-	//fmt.Println(GetAllByAuthor("Amy Haddad"))
+	// a := GetBookDetails("Book1")
+	// fmt.Println(a)
+	fmt.Println(GetAllByAuthor("Amy Haddad"))
 
 }
