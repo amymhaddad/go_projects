@@ -2,15 +2,13 @@ package bookstore_test
 
 import (
 	"bookstore"
-	"fmt"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
 )
 
-//ex of the compile only test
+
 func TestBook(t *testing.T) {
-	//note syntax: bookstore.Book {} --> creating an instance of Book struct
 	_ = bookstore.Book{
 		Title:       "Spark Joy",
 		Author:      "Marie Kondō",
@@ -22,15 +20,19 @@ func TestBook(t *testing.T) {
 
 func TestGetAllBooks(t *testing.T) {
 	t.Parallel()
-	//syntax says: in the bookstore module, get the Book struct and create a new intance of type Book
-	book1 := bookstore.Book{ID: "Book1", Title: "Problem Solving for Programmers", Author: "Amy Haddad", Description: "bbbb"}
-	book2 := bookstore.Book{Title: "Learn to PS", Author: "Amy Haddad", Description: "aaaaaa"}
-	book3 := bookstore.Book{Title: "Travel 101", Author: "John Smith", Description: "aaaaaa"}
+	bookstore.Books = []bookstore.Book{}
+	bookstore.AddBook("Book1", "Problem Solving for Programmers", "Amy Haddad", "bbbb")
 
-	want := append(bookstore.Books, book1, book2, book3)
+	want := []bookstore.Book{
+		{
+			Title:     "Problem Solving for Programmers",
+			Author:    "Amy Haddad",
+			Description: "bbbb",
+			ID:         "Book1",
+		},
+	}
 	got := bookstore.GetAllBooks()
 
-	fmt.Println("\nwant: ", want, "\ngot: ", got)
 	if !cmp.Equal(want, got) {
 		t.Error(cmp.Diff(want, got))
 	}
@@ -53,35 +55,31 @@ func TestNewID(t *testing.T) {
 
 }
 
-// func TestAllByAuthor(t *testing.T) {
-// 	t.Parallel()
-
-// }
-
-
-func TestGetBookDetails(t *testing.T) {
+func TestAllByAuthor(t *testing.T) {
 	t.Parallel()
-	// "Title: %s \nAuthor: %s \nDescription: %s\nPriceCents: %s\nID: %s"
-		//unclear why this test fails? this is exactly the string I want to get
-	want := "Title: Problem Solving for Programmers\nAuthor: Amy Haddad\nDescription: bbbb\nPriceCents: 0\nID: Book1"
-	got := bookstore.GetBookDetails("Book1")
+	bookstore.Books = []bookstore.Book{}
+	bookstore.AddBook("Book1", "Problem Solving for Programmers", "Amy Haddad", "bbbb")
+	bookstore.AddBook("Book2", "Learn to PS", "Amy Haddad", "bbbb")
 
-	
-	//print out the details (what and got) when hit error
+	want := "Problem Solving for Programmers\nLearn to PS"
+	got := bookstore.GetAllByAuthor("Amy Haddad")
+
 	if want != got {
-		t.Errorf("No details for this book id:\ngot: %s\nwant: %s", got, want)
-	
+		t.Errorf("got %s", got)
 	}
-
 	
 }
 
+func TestGetBookDetails(t *testing.T) {
+	t.Parallel()
+	want := "Title: Problem Solving for Programmers\nAuthor: Amy Haddad\nDescription: bbbb\nPriceCents: 0\nID: Book1"
+	got := bookstore.GetBookDetails("Book1")
 
+	//print out the details (what and got) when hit error
+	if want != got {
+		t.Errorf("No details for this book id:\ngot: %s\nwant: %s", got, want)
 
-// bookstore.GetAllBooks()
-// 	allBooks := bookstore.Books
-// 	fmt.Println(allBooks)
-	
-// 	for _, v := range allBooks{
-// 		fmt.Printf("%s", v.Title)
-// 	}
+	}
+
+}
+

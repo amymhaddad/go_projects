@@ -20,30 +20,20 @@ type Book struct {
 // Books creates a slice of type Book
 var Books = []Book{}
 
-//for map implementation
-// var v2Books = map[string]Book{}
+//AddBook adds a book to the Books slice
+func AddBook(id, title, author, description string) {
+	book := Book{
+		ID:          id,
+		Title:       title,
+		Author:      author,
+		Description: description,
+	}
 
-// func v2GetAllBooks() string {
-// 	v2Books["Book1"] = Book{
-// 		ID: "Book1", 
-// 		Title: "Problem Solving for Programmers", 
-// 		Author: "Amy Haddad", 
-// 		Description: "bbbb"}
-	
-// 	v2Books["Book2"] = Book{
-// 		ID: "Book2", Title: "Learn to PS", Author: "Amy Haddad", Description: "aaaaaa",
-// 	}
-// 	return v2Books
-
-// }
+	Books = append(Books, book)
+}
 
 //GetAllBooks returns a slice of Books
 func GetAllBooks() []Book {
-	book1 := Book{ID: "Book1", Title: "Problem Solving for Programmers", Author: "Amy Haddad", Description: "bbbb"}
-	book2 := Book{Title: "Learn to PS", Author: "Amy Haddad", Description: "aaaaaa"}
-	book3 := Book{Title: "Travel 101", Author: "John Smith", Description: "aaaaaa"}
-
-	Books = append(Books, book1, book2, book3)
 	return Books
 }
 
@@ -52,7 +42,6 @@ func GetBookDetails(bookID string) string {
 	allBooks := GetAllBooks()
 
 	for _, book := range allBooks {
-
 		if book.ID == bookID {
 			return fmt.Sprintf("Title: %s\nAuthor: %s\nDescription: %s\nPriceCents: %s\nID: %s", book.Title, book.Author, book.Description, strconv.Itoa(book.PriceCents), book.ID)
 		}
@@ -94,12 +83,3 @@ func NewID() string {
 	return string(id)
 
 }
-
-// func main() {
-// 	GetAllBooks()
-// 	allBooks := Books 
-	
-// 	for _, v := range allBooks{
-// 		fmt.Printf("%s", v.Title)
-// 	}
-// }
