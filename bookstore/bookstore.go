@@ -21,21 +21,21 @@ type Book struct {
 var Books = []Book{}
 
 //for map implementation
-var v2Books = map[string]Book{}
+// var v2Books = map[string]Book{}
 
-func v2GetAllBooks() string {
-	v2Books["Book1"] = Book{
-		ID: "Book1", 
-		Title: "Problem Solving for Programmers", 
-		Author: "Amy Haddad", 
-		Description: "bbbb"}
+// func v2GetAllBooks() string {
+// 	v2Books["Book1"] = Book{
+// 		ID: "Book1", 
+// 		Title: "Problem Solving for Programmers", 
+// 		Author: "Amy Haddad", 
+// 		Description: "bbbb"}
 	
-	v2Books["Book2"] = Book{
-		ID: "Book2", Title: "Learn to PS", Author: "Amy Haddad", Description: "aaaaaa"
-	}
-	return v2Books
+// 	v2Books["Book2"] = Book{
+// 		ID: "Book2", Title: "Learn to PS", Author: "Amy Haddad", Description: "aaaaaa",
+// 	}
+// 	return v2Books
 
-}
+// }
 
 //GetAllBooks returns a slice of Books
 func GetAllBooks() []Book {
@@ -54,7 +54,7 @@ func GetBookDetails(bookID string) string {
 	for _, book := range allBooks {
 
 		if book.ID == bookID {
-			return fmt.Sprintf("Title: %s \nAuthor: %s \nDescription: %s \nPriceCents: %s \nID: %s", book.Title, book.Author, book.Description, strconv.Itoa(book.PriceCents), book.ID)
+			return fmt.Sprintf("Title: %s\nAuthor: %s\nDescription: %s\nPriceCents: %s\nID: %s", book.Title, book.Author, book.Description, strconv.Itoa(book.PriceCents), book.ID)
 		}
 
 	}

@@ -4,6 +4,7 @@ import (
 	"bookstore"
 	"fmt"
 	"testing"
+
 	"github.com/google/go-cmp/cmp"
 )
 
@@ -60,17 +61,16 @@ func TestNewID(t *testing.T) {
 
 func TestGetBookDetails(t *testing.T) {
 	t.Parallel()
+	// "Title: %s \nAuthor: %s \nDescription: %s\nPriceCents: %s\nID: %s"
 		//unclear why this test fails? this is exactly the string I want to get
 	want := "Title: Problem Solving for Programmers\nAuthor: Amy Haddad\nDescription: bbbb\nPriceCents: 0\nID: Book1"
 	got := bookstore.GetBookDetails("Book1")
 
-	// fmt.Println("\nwant: ", want)
-	// fmt.Println("\ngot: ", got)
-	// fmt.Println("compare: ", want==got)
-
-
+	
+	//print out the details (what and got) when hit error
 	if want != got {
-		t.Errorf("No details for this book id")
+		t.Errorf("No details for this book id:\ngot: %s\nwant: %s", got, want)
+	
 	}
 
 	
