@@ -75,7 +75,6 @@ func TestGetBookDetails(t *testing.T) {
 	want := "Title: Problem Solving for Programmers\nAuthor: Amy Haddad\nDescription: bbbb\nPriceCents: 0\nID: Book1"
 	got := bookstore.GetBookDetails("Book1")
 
-	//print out the details (what and got) when hit error
 	if want != got {
 		t.Errorf("No details for this book id:\ngot: %s\nwant: %s", got, want)
 
