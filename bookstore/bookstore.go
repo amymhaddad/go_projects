@@ -18,7 +18,7 @@ type Book struct {
 }
 
 // Books creates a slice of type Book
-var Books = []Book{}
+var Books = map[string]Book{}
 
 //AddBook adds a book to the Books slice
 func AddBook(id, title, author, description string) {
@@ -29,11 +29,13 @@ func AddBook(id, title, author, description string) {
 		Description: description,
 	}
 
-	Books = append(Books, book)
+	Books[id] = book
+
+	//Books = append(Books, book)
 }
 
-//GetAllBooks returns a slice of Books
-func GetAllBooks() []Book {
+//GetAllBooks returns a map of Books
+func GetAllBooks() map[string]Book {
 	return Books
 }
 
@@ -83,3 +85,8 @@ func NewID() string {
 	return string(id)
 
 }
+
+// func main() {
+// 	AddBook("Book1", "Problem Solving for Programmers", "Amy Haddad", "bbbb")
+// 	fmt.Println(Books)
+// }
