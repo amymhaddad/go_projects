@@ -30,8 +30,6 @@ func AddBook(id, title, author, description string) {
 	}
 
 	Books[id] = book
-
-	//Books = append(Books, book)
 }
 
 //GetAllBooks returns a map of Books
@@ -43,13 +41,12 @@ func GetAllBooks() map[string]Book {
 func GetBookDetails(bookID string) string {
 	allBooks := GetAllBooks()
 
-	for _, book := range allBooks {
-		if book.ID == bookID {
-			return fmt.Sprintf("Title: %s\nAuthor: %s\nDescription: %s\nPriceCents: %s\nID: %s", book.Title, book.Author, book.Description, strconv.Itoa(book.PriceCents), book.ID)
-		}
+	book, ok := allBooks[bookID]
 
+	if !ok {
+		return "Book is not found"
 	}
-	return "Book is not found"
+	return fmt.Sprintf("Title: %s\nAuthor: %s\nDescription: %s\nPriceCents: %s\nID: %s", book.Title, book.Author, book.Description, strconv.Itoa(book.PriceCents), book.ID)
 
 }
 
@@ -78,7 +75,6 @@ func NewID() string {
 
 	num := '0' + numIndex
 	letter := letterIndex + 'a'
-	fmt.Println(num, letter)
 
 	id[0] = byte(num)
 	id[1] = byte(letter)
@@ -88,5 +84,5 @@ func NewID() string {
 
 // func main() {
 // 	AddBook("Book1", "Problem Solving for Programmers", "Amy Haddad", "bbbb")
-// 	fmt.Println(Books)
+// 	fmt.Println(GetBookDetails("Book1"))
 // }
