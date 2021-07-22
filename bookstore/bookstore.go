@@ -1,4 +1,4 @@
-package bookstore
+package main
 
 import (
 	"fmt"
@@ -20,6 +20,11 @@ type Book struct {
 // Books creates a slice of type Book
 var Books = map[string]Book{}
 
+// BooksByAuthor keeps track of each book an author writes
+var BooksByAuthor = make(map[string]map[string]string)
+
+//var BooksByAuthor = make(map[string]Book)
+
 //AddBook adds a book to the Books slice
 func AddBook(id, title, author, description string) {
 	book := Book{
@@ -30,6 +35,26 @@ func AddBook(id, title, author, description string) {
 	}
 
 	Books[id] = book
+}
+
+// AddAuthorBooks adds an author's book, id, and title to the BooksByAuthor map
+func AddAuthorBooks(name, id, title string) {
+
+	//Checking to see if the name exists in the map. IF it does,
+	//then I want add another id/title to it (i don't want to overwrite what's
+	//already there)
+	if _,ok := BooksByAuthor[name]; ok {
+		fmt.Println(BooksByAuthor
+		author := BooksByAuthor[name]
+		author[id] = currVal
+	}
+
+	idTitle := map[string]string{id: title}
+	BooksByAuthor[name] = idTitle
+}
+
+func main() {
+	AddAuthorBooks("Aamy", "id1", "title")
 }
 
 //GetAllBooks returns a map of Books
