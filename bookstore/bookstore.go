@@ -21,9 +21,7 @@ type Book struct {
 var Books = map[string]Book{}
 
 // BooksByAuthor keeps track of each book an author writes
-var BooksByAuthor = make(map[string]map[string]string)
-
-//var BooksByAuthor = make(map[string]Book)
+var BooksByAuthor = make(map[string][]string)
 
 //AddBook adds a book to the Books slice
 func AddBook(id, title, author, description string) {
@@ -35,27 +33,22 @@ func AddBook(id, title, author, description string) {
 	}
 
 	Books[id] = book
+
+	BooksByAuthor[name] = append(BooksByAuthor[name], id)
 }
 
-// AddAuthorBooks adds an author's book, id, and title to the BooksByAuthor map
-func AddAuthorBooks(name, id, title string) {
-
-	//Checking to see if the name exists in the map. IF it does,
-	//then I want add another id/title to it (i don't want to overwrite what's
-	//already there)
-	if _,ok := BooksByAuthor[name]; ok {
-		fmt.Println(BooksByAuthor
-		author := BooksByAuthor[name]
-		author[id] = currVal
-	}
-
-	idTitle := map[string]string{id: title}
-	BooksByAuthor[name] = idTitle
-}
-
-func main() {
-	AddAuthorBooks("Aamy", "id1", "title")
-}
+// AddAuthorId adds an author's book, id, and title to the BooksByAuthor map
+// func AddAuthorId(name, id string) {
+// 	BooksByAuthor[name] = append(BooksByAuthor[name], id)
+// }
+//
+// func main() {
+// 	// BooksByAuthor["amy"] = append(BooksByAuthor["amy"], "id1")
+// 	// fmt.Println(BooksByAuthor)
+// 	AddAuthorId("amy", "Id1")
+// 	AddAuthorId("amy", "Id2")
+// 	fmt.Println(BooksByAuthor)
+// }
 
 //GetAllBooks returns a map of Books
 func GetAllBooks() map[string]Book {
@@ -106,8 +99,3 @@ func NewID() string {
 	return string(id)
 
 }
-
-// func main() {
-// 	AddBook("Book1", "Problem Solving for Programmers", "Amy Haddad", "bbbb")
-// 	fmt.Println(GetBookDetails("Book1"))
-// }
