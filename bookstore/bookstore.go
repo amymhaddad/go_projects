@@ -34,21 +34,8 @@ func AddBook(id, title, author, description string) {
 
 	Books[id] = book
 
-	BooksByAuthor[name] = append(BooksByAuthor[name], id)
+	BooksByAuthor[author] = append(BooksByAuthor[author], id)
 }
-
-// AddAuthorId adds an author's book, id, and title to the BooksByAuthor map
-// func AddAuthorId(name, id string) {
-// 	BooksByAuthor[name] = append(BooksByAuthor[name], id)
-// }
-//
-// func main() {
-// 	// BooksByAuthor["amy"] = append(BooksByAuthor["amy"], "id1")
-// 	// fmt.Println(BooksByAuthor)
-// 	AddAuthorId("amy", "Id1")
-// 	AddAuthorId("amy", "Id2")
-// 	fmt.Println(BooksByAuthor)
-// }
 
 //GetAllBooks returns a map of Books
 func GetAllBooks() map[string]Book {

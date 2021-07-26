@@ -50,15 +50,6 @@ func TestNewID(t *testing.T) {
 
 func TestAllByAuthor(t *testing.T) {
 	t.Parallel()
-
-	bookstore.BooksByAuthor = make(map[string][]string)
-	bookstore.AddAuthorId("amy", "Id1")
-	bookstore.AddAuthorId("amy", "Id2")
-
-}
-
-func TestAllByAuthor(t *testing.T) {
-	t.Parallel()
 	bookstore.Books = map[string]bookstore.Book{}
 	bookstore.AddBook("Book1", "Problem Solving for Programmers", "Amy Haddad", "bbbb")
 	bookstore.AddBook("Book2", "Learn to PS", "Amy Haddad", "bbbb")
