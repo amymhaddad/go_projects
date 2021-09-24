@@ -2,27 +2,31 @@ package calculator_test
 
 import (
 	"calculator"
+	"math"
 	"testing"
 )
+
+func closeEnough(a, b, tolerance float64) bool {
+	return math.Abs(a-b) <= tolerance
+}
 
 func TestAdd(t *testing.T) {
 	t.Parallel()
 
-	type testCase struct {
+	testCases := []struct {
 		a, b float64
 		want float64
-	}
-
-	testCases := []testCase{
+	}{
 		{a: 2, b: 2, want: 4},
 		{a: 1, b: 2, want: 3},
 	}
 
-	for _, tc := range testCases {
-		got := calculator.Add(tc.a, tc.b)
+	for _, testCase := range testCases {
+		got := calculator.Add(testCase.a, testCase.b)
 
-		if tc.want != got {
-			t.Errorf("want %f, got %f", tc.want, got)
+		if testCase.want != got {
+			//extend message to include the inputs, since they vary per test case
+			t.Errorf("Add (%f, %f): want %f, got %f", testCase.a, testCase.b, testCase.want, got)
 		}
 	}
 
@@ -30,22 +34,82 @@ func TestAdd(t *testing.T) {
 
 func TestSubtract(t *testing.T) {
 	t.Parallel()
-	var want float64 = 2
-	got := calculator.Subtract(4, 2)
-	if want != got {
-		t.Errorf("want %f, got %f", want, got)
+
+	testCases := []struct {
+		a, b float64
+		want float64
+	}{
+		{a: 6, b: 4, want: 2},
+		{a: -1, b: 5, want: -6},
+	}
+
+	for _, testCase := range testCases {
+		got := calculator.Subtract(testCase.a, testCase.b)
+		if testCase.want != got {
+			t.Errorf("Subtract (%f, %f): want %f, got %f", testCase.a, testCase.b, testCase.want, got)
+		}
 	}
 }
 
 func TestMultiply(t *testing.T) {
 	t.Parallel()
 
-	var want float64 = 4
+	testCases := []struct {
+		a, b float64
+		want float64
+	}{
+		{a: 0, b: -1, want: 0},
+		{a: 5, b: 2, want: 10.0},
+	}
 
-	got := calculator.Multiply(2, 2)
+	for _, testCase := range testCases {
+		got := calculator.Multiply(testCase.a, testCase.b)
 
-	if want != got {
-		t.Errorf("want %f, got %f", want, got)
+		if testCase.want != got {
+			t.Errorf("Multiply: (%f, %f) want: %f, got: %f", testCase.a, testCase.b, testCase.want, got)
+		}
+
+	}
+}
+
+func TestDivide(t *testing.T) {
+	t.Parallel()
+
+	//Add a bool val to indicate if an error was returned 
+	testCases := []struct {
+		a, b        float64
+		want        float64
+		errExpected bool
+	}{
+		{a: 4, b: 2, want: 2, errExpected: false},
+		//Note the crazy value for this edge case -- if I see this value, then I know something is wrong w/the test. That's bc the error should hvae been triggered (ie, the data value shouldn't have been tested)
+		{a: 6, b: 0, want: 999, errExpected: true},
+		//{a: 1, b: 3, want: 0.333333, errExpected: false},
+	}
+
+	for _, testCase := range testCases {
+		got, err := calculator.Divide(testCase.a, testCase.b)
+		errReceived := err != nil 
+
+		//Check for error status first. The data value is irrelevant if there's an error 
+		if errReceived != testCase.errExpected {
+			t.Fatalf("Division by 0 error")
+		}
+		
+		//alt: if err == nil && !closeEnough(testCase.want, got, 0.001) {
+		//I've already checked the output of the funtion. Now check my testcase. Only compare if the values if the testcase doesn't expect an error
+		if !testCase.errExpected && testCase.want != got {
+			t.Errorf("Division (%f, %f) want: %f, got: %f", testCase.a, testCase.b, testCase.want, got)
+		}
+		
 	}
 
 }
+
+/*
+t.Errorf - outputs the failure message, but the test function continues to execute
+t.Fatalf - outputs the failure message, and exits the test immediately (fail and bail)
+Use cases: there's no point moving no (ie, in this sitation) or when reading a file and the fiole doesn't load
+
+
+*/
