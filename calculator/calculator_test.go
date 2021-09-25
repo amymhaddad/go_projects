@@ -75,7 +75,7 @@ func TestMultiply(t *testing.T) {
 func TestDivide(t *testing.T) {
 	t.Parallel()
 
-	//Add a bool val to indicate if an error was returned 
+	//Add a bool val to indicate if an error was returned
 	testCases := []struct {
 		a, b        float64
 		want        float64
@@ -89,19 +89,19 @@ func TestDivide(t *testing.T) {
 
 	for _, testCase := range testCases {
 		got, err := calculator.Divide(testCase.a, testCase.b)
-		errReceived := err != nil 
+		errReceived := err != nil
 
-		//Check for error status first. The data value is irrelevant if there's an error 
+		//Check for error status first. The data value is irrelevant if there's an error
 		if errReceived != testCase.errExpected {
 			t.Fatalf("Division by 0 error")
 		}
-		
+
 		//alt: if err == nil && !closeEnough(testCase.want, got, 0.001) {
 		//I've already checked the output of the funtion. Now check my testcase. Only compare if the values if the testcase doesn't expect an error
 		if !testCase.errExpected && testCase.want != got {
 			t.Errorf("Division (%f, %f) want: %f, got: %f", testCase.a, testCase.b, testCase.want, got)
 		}
-		
+
 	}
 
 }
@@ -113,3 +113,47 @@ Use cases: there's no point moving no (ie, in this sitation) or when reading a f
 
 
 */
+
+func TestSquareRoot(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		a           float64
+		want        float64
+		errExpected bool
+	}{
+		{a: 4, want: 2, errExpected: false},
+		{a: -4, want: 999, errExpected: true},
+	}
+
+	for _, testCase := range testCases {
+		got, err := calculator.SquareRoot(testCase.a)
+		errReceived := err != nil
+
+		//Check to see if the error status from the function matches my test case expectations
+		if errReceived != testCase.errExpected {
+			t.Fatalf("Can't get the square root of a negative number")
+		}
+
+		//IF my test case doesn't expect an error, then compare want and got
+		if !testCase.errExpected && testCase.want != got {
+			t.Errorf("SqureRoot (%f), want: %f, got: %f", testCase.a, testCase.want, got)
+		}
+
+	}
+
+}
+
+func TestExpressions(t *testing.T) {
+	t.Parallel()
+
+	want := float64(4)
+	expr := "2 * 2"
+
+	got := calculator.Expressions(expr)
+
+	if want != got {
+		t.Errorf("want: %f, got: %f", want, got)
+	}
+
+}
