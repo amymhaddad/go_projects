@@ -3,7 +3,10 @@ package calculator
 
 import (
 	"errors"
+	"fmt"
 	"math"
+	"regexp"
+	"strconv"
 )
 
 // Add takes two numbers and returns the // result of adding them together.
@@ -45,5 +48,46 @@ func SquareRoot(a float64) (float64, error) {
 //expression
 func Expressions(expr string) float64 {
 	return 0
+
+}
+//ArithExpr is a type that contains an expression
+type ArithExpr struct {
+	num1      float64
+	num2      float64
+	operation string
+}
+
+// //escape spec chars (ie, * +) bc these values have other regex meanings; use [] to match 1 instance
+// //index 0 matches everyting in regex
+func parseExpression(expression string)  {
+	var expr ArithExpr
+	re := regexp.MustCompile(`(\d) ([\*\+-/]) (\d)`)
+	result := re.FindStringSubmatch(expression)
+
+	expr.num1, _ = strconv.ParseFloat(result[1], 64)
+	expr.num2, _ = strconv.ParseFloat(result[3], 64)
+	expr.operation = result[2]
+	calculate(expr)
+}
+
+// /*
+//bad practice bc I'm relying on side effects -- I'm not returning enaythign from parseExpression.
+//It's better to return value that I can pass around which is why i should use pointer semantics 
+
+// */
+
+func calculate(expr ArithExpr) {
+	switch expr.operation {
+	case "*":
+		fmt.Println(Multiply(expr.num1, expr.num2))
+	case "-":
+		fmt.Println(Subtract(expr.num1, expr.num2))
+	case "+":
+		fmt.Println(Add(expr.num1, expr.num2))
+	case "/":
+		fmt.Println(Divide(expr.num1, expr.num2))
+	default:
+		fmt.Println("Invalid expression")
+	}
 
 }

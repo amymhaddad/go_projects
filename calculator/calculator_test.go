@@ -25,11 +25,9 @@ func TestAdd(t *testing.T) {
 		got := calculator.Add(testCase.a, testCase.b)
 
 		if testCase.want != got {
-			//extend message to include the inputs, since they vary per test case
 			t.Errorf("Add (%f, %f): want %f, got %f", testCase.a, testCase.b, testCase.want, got)
 		}
 	}
-
 }
 
 func TestSubtract(t *testing.T) {
@@ -75,30 +73,25 @@ func TestMultiply(t *testing.T) {
 func TestDivide(t *testing.T) {
 	t.Parallel()
 
-	//Add a bool val to indicate if an error was returned
 	testCases := []struct {
 		a, b        float64
 		want        float64
 		errExpected bool
 	}{
 		{a: 4, b: 2, want: 2, errExpected: false},
-		//Note the crazy value for this edge case -- if I see this value, then I know something is wrong w/the test. That's bc the error should hvae been triggered (ie, the data value shouldn't have been tested)
 		{a: 6, b: 0, want: 999, errExpected: true},
-		//{a: 1, b: 3, want: 0.333333, errExpected: false},
+		{a: 1, b: 3, want: 0.333333, errExpected: false},
 	}
 
 	for _, testCase := range testCases {
 		got, err := calculator.Divide(testCase.a, testCase.b)
 		errReceived := err != nil
 
-		//Check for error status first. The data value is irrelevant if there's an error
 		if errReceived != testCase.errExpected {
 			t.Fatalf("Division by 0 error")
 		}
 
-		//alt: if err == nil && !closeEnough(testCase.want, got, 0.001) {
-		//I've already checked the output of the funtion. Now check my testcase. Only compare if the values if the testcase doesn't expect an error
-		if !testCase.errExpected && testCase.want != got {
+		if err == nil && !closeEnough(testCase.want, got, 0.001) {
 			t.Errorf("Division (%f, %f) want: %f, got: %f", testCase.a, testCase.b, testCase.want, got)
 		}
 
@@ -106,13 +99,6 @@ func TestDivide(t *testing.T) {
 
 }
 
-/*
-t.Errorf - outputs the failure message, but the test function continues to execute
-t.Fatalf - outputs the failure message, and exits the test immediately (fail and bail)
-Use cases: there's no point moving no (ie, in this sitation) or when reading a file and the fiole doesn't load
-
-
-*/
 
 func TestSquareRoot(t *testing.T) {
 	t.Parallel()
