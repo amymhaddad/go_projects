@@ -50,6 +50,7 @@ func Expressions(expr string) float64 {
 	return 0
 
 }
+
 //ArithExpr is a type that contains an expression
 type ArithExpr struct {
 	num1      float64
@@ -59,7 +60,7 @@ type ArithExpr struct {
 
 // //escape spec chars (ie, * +) bc these values have other regex meanings; use [] to match 1 instance
 // //index 0 matches everyting in regex
-func parseExpression(expression string)  {
+func parseExpression(expression string) *ArithExpr {
 	var expr ArithExpr
 	re := regexp.MustCompile(`(\d) ([\*\+-/]) (\d)`)
 	result := re.FindStringSubmatch(expression)
@@ -67,16 +68,16 @@ func parseExpression(expression string)  {
 	expr.num1, _ = strconv.ParseFloat(result[1], 64)
 	expr.num2, _ = strconv.ParseFloat(result[3], 64)
 	expr.operation = result[2]
-	calculate(expr)
+	return &expr
 }
 
 // /*
 //bad practice bc I'm relying on side effects -- I'm not returning enaythign from parseExpression.
-//It's better to return value that I can pass around which is why i should use pointer semantics 
+//It's better to return value that I can pass around which is why i should use pointer semantics
 
 // */
 
-func calculate(expr ArithExpr) {
+func calculate(expr *ArithExpr) {
 	switch expr.operation {
 	case "*":
 		fmt.Println(Multiply(expr.num1, expr.num2))

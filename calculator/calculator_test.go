@@ -130,16 +130,3 @@ func TestSquareRoot(t *testing.T) {
 
 }
 
-func TestExpressions(t *testing.T) {
-	t.Parallel()
-
-	want := float64(4)
-	expr := "2 * 2"
-
-	got := calculator.Expressions(expr)
-
-	if want != got {
-		t.Errorf("want: %f, got: %f", want, got)
-	}
-
-}
