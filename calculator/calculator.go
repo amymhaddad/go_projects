@@ -11,7 +11,6 @@ import (
 
 // Add takes two numbers and returns the // result of adding them together.
 func Add(a, b float64) float64 {
-
 	return a + b
 }
 
@@ -58,8 +57,6 @@ type ArithExpr struct {
 	operation string
 }
 
-// //escape spec chars (ie, * +) bc these values have other regex meanings; use [] to match 1 instance
-// //index 0 matches everyting in regex
 func parseExpression(expression string) *ArithExpr {
 	var expr ArithExpr
 	re := regexp.MustCompile(`(\d) ([\*\+-/]) (\d)`)
@@ -70,12 +67,6 @@ func parseExpression(expression string) *ArithExpr {
 	expr.operation = result[2]
 	return &expr
 }
-
-// /*
-//bad practice bc I'm relying on side effects -- I'm not returning enaythign from parseExpression.
-//It's better to return value that I can pass around which is why i should use pointer semantics
-
-// */
 
 func calculate(expr *ArithExpr) {
 	switch expr.operation {
@@ -90,5 +81,4 @@ func calculate(expr *ArithExpr) {
 	default:
 		fmt.Println("Invalid expression")
 	}
-
 }

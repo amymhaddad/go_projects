@@ -6,10 +6,6 @@ import (
 	"testing"
 )
 
-func closeEnough(a, b, tolerance float64) bool {
-	return math.Abs(a-b) <= tolerance
-}
-
 func TestAdd(t *testing.T) {
 	t.Parallel()
 
@@ -99,7 +95,6 @@ func TestDivide(t *testing.T) {
 
 }
 
-
 func TestSquareRoot(t *testing.T) {
 	t.Parallel()
 
@@ -116,17 +111,17 @@ func TestSquareRoot(t *testing.T) {
 		got, err := calculator.SquareRoot(testCase.a)
 		errReceived := err != nil
 
-		//Check to see if the error status from the function matches my test case expectations
 		if errReceived != testCase.errExpected {
 			t.Fatalf("Can't get the square root of a negative number")
 		}
 
-		//IF my test case doesn't expect an error, then compare want and got
 		if !testCase.errExpected && testCase.want != got {
 			t.Errorf("SqureRoot (%f), want: %f, got: %f", testCase.a, testCase.want, got)
 		}
-
 	}
 
 }
 
+func closeEnough(a, b, tolerance float64) bool {
+	return math.Abs(a-b) <= tolerance
+}
