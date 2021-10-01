@@ -16,23 +16,33 @@ func TestBook(t *testing.T) {
 
 }
 
+
+//Test 1, iteration 1
 func TestBuy(t *testing.T) {
 	t.Parallel()
 
+	//Create an instance of the type Book 
 	b := bookstore.Book{
 		Title:  "T1",
-		Copies: 3,
+		Author: "A1",
+		Copies: 0,
 	}
-	testCases := []struct {
-		Title  string
-		Copies int
-	}{
-		{Title: "T1", Copies: 2},
+	_, err := bookstore.Buy(b)
+
+	if err == nil {
+		t.Errorf("Want error, got nil")
 	}
-
-	for _, testCase := range TestCases {
-		got := bookstore.Buy(b)
-
-	}
-
+	// want := 9999
+	// errExpected := true
+	// result, err := bookstore.Buy(b)
+	// got := result.Copies
+	// errReceived := err != nil 
+	
+	// if errReceived  && errExpected {
+	// 	t.Fatal("no more copies left")
+	// }
+	// //Check if want != to got
+	// if want != got {
+	// 	t.Errorf("want %d copies after buying 1 copy from a stock of 2, got %d", want, got)
+	// }
 }
