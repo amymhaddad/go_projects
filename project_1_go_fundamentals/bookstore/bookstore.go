@@ -1,6 +1,10 @@
 package bookstore
 
-import "errors"
+//package main
+
+import (
+	"errors"
+)
 
 //Book defines a book in the bookstore
 type Book struct {
@@ -9,14 +13,29 @@ type Book struct {
 	Copies int
 }
 
-//The function signature is already determined by the test
-//Start with a failing test, which means you need to return the zero value of the result type is.
-//In this case, it's an empty Book 
+//Buy reduces the copies of the book left
 func Buy(b Book) (Book, error) {
 	if b.Copies == 0 {
-		//conventionally return zero for the data value, since it’s to be ignored (in this case, it's Book{})
 		return Book{}, errors.New("no more copies left")
 	}
 	b.Copies--
 	return b, nil
 }
+
+func GetAllBooks(catalog []Book) []Book {
+	return catalog
+	//  b := []Book{}
+	// for _, books := range books {
+	// 	b = append(b, books)
+	// }
+	// return b
+} 
+
+// func main() {
+// 	want := []Book{
+// 		{Title:  "T1"}, 
+// 		{Title:  "T2"},
+// 	}
+// 	x := GetAllBooks(want)
+// 	fmt.Println(x)
+// }
