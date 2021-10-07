@@ -27,11 +27,10 @@ func Buy(b Book) (Book, error) {
 
 //GetAllBooks returns all books in the catalog
 func GetAllBooks(catalog map[int]Book) []Book {
-	 
 	 b := []Book{}
-	for _, books := range catalog{
-		b = append(b, books)
-	}
+	 for _, book := range catalog {
+		 b = append(b, book)
+	 }
 	return b
 }
 
@@ -50,10 +49,10 @@ func GetBook(catalog map[int]Book, bookID int) (Book, error) {
 }
 
 // func main() {
-// 	want := []Book{
-// 		{Title:  "T1"},
-// 		{Title:  "T2"},
+// 	c := map[int]Book{
+// 		1: {Title: "T1", ID: 1},
+// 		2: {Title: "T2", ID: 2},
 // 	}
-// 	x := GetAllBooks(want)
+// 	x := GetAllBooks(c)
 // 	fmt.Println(x)
 // }
