@@ -14,8 +14,6 @@ type Book struct {
 	ID     int
 }
 
-var catalog map[int]Book
-
 //Buy reduces the copies of the book left
 func Buy(b Book) (Book, error) {
 	if b.Copies == 0 {
@@ -36,9 +34,6 @@ func GetAllBooks(catalog map[int]Book) []Book {
 
 //GetBook returns a single book
 func GetBook(catalog map[int]Book, bookID int) (Book, error) {
-	//Using map as cache is much quicker than iteration
-
-	//Do this map check outside of if statement. That way I can still access the book value
 	book, found := catalog[bookID]
 
 	if !found {
@@ -47,12 +42,3 @@ func GetBook(catalog map[int]Book, bookID int) (Book, error) {
 	return book, nil
 
 }
-
-// func main() {
-// 	c := map[int]Book{
-// 		1: {Title: "T1", ID: 1},
-// 		2: {Title: "T2", ID: 2},
-// 	}
-// 	x := GetAllBooks(c)
-// 	fmt.Println(x)
-// }

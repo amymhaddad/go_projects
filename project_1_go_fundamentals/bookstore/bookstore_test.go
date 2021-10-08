@@ -22,7 +22,6 @@ func TestBook(t *testing.T) {
 func TestBuy(t *testing.T) {
 	t.Parallel()
 
-	//Create an instance of the type Book
 	b := bookstore.Book{
 		Title:  "T1",
 		Author: "A1",
@@ -69,7 +68,7 @@ func TestGetAllBooks(t *testing.T) {
 	}
 
 	got := bookstore.GetAllBooks(catalog)
-	sort.Slice(got, func(i, j int) bool { 
+	sort.Slice(got, func(i, j int) bool {
 		return got[i].ID < got[j].ID
 	})
 
@@ -107,10 +106,8 @@ func TestBookWithBadIDReturnsError(t *testing.T) {
 	bookID := 2
 	_, err := bookstore.GetBook(catalog, bookID)
 
-	//Checking if there's NO error (ie, I get a nil val back. If that's the case, return an error)
 	if err == nil {
 		t.Fatal("want an error for non-existing ID, but got nil")
 	}
 
 }
-
