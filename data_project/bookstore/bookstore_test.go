@@ -40,3 +40,22 @@ func TestGetBooks(t *testing.T) {
 	}
 
 }
+
+func TestGetBookDetails(t *testing.T) {
+	t.Parallel()
+	catalog := map[int]bookstore.Book{
+		1: {Title: "T1", Author: "A1", Copies: 1},
+		2: {Title: "T2", Author: "A2", Copies: 1},
+	}
+
+	ID := 2
+
+	want := bookstore.Book{Title: "T1", Author: "A1", Copies: 1}
+
+	got := bookstore.GetBookDetails(catalog, ID)
+
+	if !cmp.Equal(want, got) {
+		cmp.Diff(want, got)
+	}
+
+}
