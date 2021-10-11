@@ -3,17 +3,14 @@ package bookstore_test
 import (
 	"bookstore"
 	"sort"
-
-	//"fmt"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
 )
 
-//Must use var for package level declarations, not the short declaration :=
 var catalog = bookstore.Catalog{
-	1: {ID: 1, Title: "T1", Author: "A1", Copies: 1},
-	2: {ID: 2, Title: "T2", Author: "A2", Copies: 1},
+	1: {ID: 1, Title: "T1", Author: "A1", Copies: 1, Price: 5},
+	2: {ID: 2, Title: "T2", Author: "A2", Copies: 1, Price: 5},
 }
 
 func TestBook(t *testing.T) {
@@ -29,8 +26,8 @@ func TestGetBooks(t *testing.T) {
 	t.Parallel()
 
 	want := []bookstore.Book{
-		{ID: 1, Title: "T1", Author: "A1", Copies: 1},
-		{ID: 2, Title: "T2", Author: "A2", Copies: 1},
+		{ID: 1, Title: "T1", Author: "A1", Copies: 1, Price: 5},
+		{ID: 2, Title: "T2", Author: "A2", Copies: 1, Price: 5},
 	}
 
 	got := bookstore.GetBooks(catalog)
@@ -48,9 +45,7 @@ func TestGetBookDetails(t *testing.T) {
 	t.Parallel()
 
 	ID := 2
-
 	want := "T1, by A1"
-
 	got, err := bookstore.GetBookDetails(catalog, ID)
 
 	if err != nil {
@@ -63,29 +58,27 @@ func TestGetBookDetails(t *testing.T) {
 
 }
 
-//Unsure why this test doesn't work when I try an ID I know that won't work?
-//Test error values w/separate test?
-// func TestGetBookDetails(t *testing.T) {
-// 	t.Parallel()
+func TestBookDetailError(t *testing.T) {
+	t.Parallel()
 
-// 	want := "Title 1, by A1"
-// 	got, err := bookstore.GetBookDetails(catalog, "3")
+	ID := 3
+	_, err := bookstore.GetBookDetails(catalog, ID)
 
-// 	if err != nil {
-// 		t.Fatal(err)
-// 	}
+	if err == nil {
+		t.Fatal(err)
+	}
+}
 
-// 	if !cmp.Equal(want, got) {
-// 		t.Errorf(cmp.Diff(want, got))
-// 	}
+func TestBuyBook(t *testing.T) {
+	t.Parallel()
 
-// }
-//This is the function:
-// func GetBookDetails(catalog []Book, ID string) (string, error) {
-// 	for _, book := range catalog {
-// 		if book.ID == ID {
-// 			return fmt.Sprintf("%s, by %s", book.Title, book.Author), nil
-// 		}
-// 	}
-// 	return "", errors.New("book isn't found")
-// }
+	ID := 1
+	price := 5
+	got := bookstore.BuyBook(catalog, price, ID)
+	want := true
+
+	if got != want {
+		t.Errorf("want: %t, got: %t ", want, got)
+	}
+
+}

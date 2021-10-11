@@ -11,12 +11,13 @@ type Book struct {
 	Title  string
 	Author string
 	Copies int
+	Price  int
 }
 
+//Catalog contains a catalog of type Book
 type Catalog map[int]Book
 
 //GetBooks returns a catalog of books
-//NOW that I have a Catalog type, I no longer need this long param declaration: func GetBooks(catalog map[int]Book) []Book {
 func GetBooks(catalog Catalog) []Book {
 	var allBooks []Book
 	for _, book := range catalog {
@@ -36,13 +37,14 @@ func GetBookDetails(catalog Catalog, ID int) (string, error) {
 	return fmt.Sprintf("%s, by %s", book.Title, book.Author), nil
 }
 
-//GetBookDetails gets the details for a particular book
-// func GetBookDetails(catalog []Book, ID string) (string, error) {
-// 	for _, book := range catalog {
-// 		if book.ID == ID {
-// 			//Sprintf() returns a string instead of printing to terminal
-// 			return fmt.Sprintf("%s, by %s", book.Title, book.Author), nil
-// 		}
-// 	}
-// 	return "", errors.New("book isn't found")
-// }
+//BuyBook returns a boolean value to determine whether a user can buy a book
+func BuyBook(catalog Catalog, price int, ID int) bool {
+	book, found := catalog[ID]
+
+	if found && book.Copies > 0 && price >= book.Price {
+		book.Copies--
+		return true
+	}
+
+	return false
+}
