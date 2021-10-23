@@ -78,7 +78,7 @@ func TestGetBook(t *testing.T) {
 	want := bookstore.Book{ID: 1, Title: "T1", Author: "A1", Copies: 1}
 	got, err := catalog.GetBook(ID)
 
-	//Return an error IF the err is NOT nil 
+	//Return an error IF the err is NOT nil
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -96,6 +96,23 @@ func TestBookDoesNotExist(t *testing.T) {
 
 	if err == nil {
 		t.Fatal(err)
+	}
+
+}
+
+func TestSalePrice(t *testing.T) {
+	t.Parallel()
+
+	b := bookstore.Book{
+		Title:      "New 1",
+		PriceCents: 500,
+	}
+
+	want := 2.50
+	got := b.SalePrice()
+
+	if want != got {
+		t.Errorf("want: %f, got: %f", want, got)
 	}
 
 }

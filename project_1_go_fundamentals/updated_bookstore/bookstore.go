@@ -1,6 +1,8 @@
 package bookstore
 
-import "fmt"
+import (
+	"fmt"
+)
 
 //Book represents a book in the bookstore
 type Book struct {
@@ -17,6 +19,9 @@ type Catalog map[int]Book
 
 const centsPerDollar = 100
 
+const saleDiscount int = .50
+
+//By specifying your code w/methods you say that the code operates on some PARTICULAR data  (ie, not any old param but a type Book )
 //NetPriceBook determines the net price of a book
 func (b Book) NetPriceBook() int {
 	dollarAmt := b.PriceCents / centsPerDollar
@@ -42,4 +47,13 @@ func (c Catalog) GetBook(ID int) (Book, error) {
 		return Book{}, fmt.Errorf("book ID %d doesn't exist", ID)
 	}
 	return book, nil
+}
+
+//SalePrice returns the sale price of a book
+func (b Book) SalePrice() float64 {
+	discountPrice := b.PriceCents * saleDiscount
+	//	x := discountPrice / centsPerDollar
+	fmt.Println("x", discountPrice)
+	return 2.50
+	//	return math.Round(discountPrice / centsPerDollar)
 }
