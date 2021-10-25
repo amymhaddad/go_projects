@@ -19,7 +19,7 @@ type Catalog map[int]Book
 
 const centsPerDollar = 100
 
-const saleDiscount int = .50
+const saleDiscount float64 = .50
 
 //By specifying your code w/methods you say that the code operates on some PARTICULAR data  (ie, not any old param but a type Book )
 //NetPriceBook determines the net price of a book
@@ -51,9 +51,7 @@ func (c Catalog) GetBook(ID int) (Book, error) {
 
 //SalePrice returns the sale price of a book
 func (b Book) SalePrice() float64 {
-	discountPrice := b.PriceCents * saleDiscount
-	//	x := discountPrice / centsPerDollar
-	fmt.Println("x", discountPrice)
-	return 2.50
-	//	return math.Round(discountPrice / centsPerDollar)
+	discountPrice := float64(b.PriceCents) * saleDiscount
+	priceInDollars := discountPrice / centsPerDollar
+	return priceInDollars
 }
