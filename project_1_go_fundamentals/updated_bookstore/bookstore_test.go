@@ -105,14 +105,27 @@ func TestSalePrice(t *testing.T) {
 
 	b := bookstore.Book{
 		Title:      "New 1",
-		PriceCents: 500,
+		PriceCents: 100,
 	}
 
-	want := 2.50
+	want := .50
 	got := b.SalePrice()
 
 	if want != got {
 		t.Errorf("want: %f, got: %f", want, got)
 	}
 
+}
+
+func TestGetBookDetails(t *testing.T) {
+	t.Parallel()
+
+	id := 1
+	want := "T1 by A1"
+
+	got := catalog.GetBookDetails(id)
+
+	if want != got {
+		t.Errorf("want: %s, got: %s", want, got)
+	}
 }

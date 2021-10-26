@@ -52,6 +52,16 @@ func (c Catalog) GetBook(ID int) (Book, error) {
 //SalePrice returns the sale price of a book
 func (b Book) SalePrice() float64 {
 	discountPrice := float64(b.PriceCents) * saleDiscount
-	priceInDollars := discountPrice / centsPerDollar
-	return priceInDollars
+	return discountPrice / centsPerDollar
+}
+
+//GetBookDetails gets the details for a particular book based on the book ID
+func (c Catalog) GetBookDetails(id int) string {
+	book, found := c[id]
+
+	if found {
+		return fmt.Sprintf("%s by %s", book.Title, book.Author)
+	} else {
+		return "Book not found"
+	}
 }
