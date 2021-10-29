@@ -129,3 +129,20 @@ func TestGetBookDetails(t *testing.T) {
 		t.Errorf("want: %s, got: %s", want, got)
 	}
 }
+
+func TestSetTitle(t *testing.T) {
+	t.Parallel()
+
+	b := bookstore.Book{
+		Title: "T1",
+	}
+	
+	b.SetTitle("New Book")
+	want := "New Book"
+	got := b.Title
+
+	if want != got {
+		t.Errorf("want: %s, got: %s", want, got)
+	}
+
+}

@@ -16,12 +16,9 @@ type Book struct {
 
 //Catalog contains all books
 type Catalog map[int]Book
-
 const centsPerDollar = 100
-
 const saleDiscount float64 = .50
 
-//By specifying your code w/methods you say that the code operates on some PARTICULAR data  (ie, not any old param but a type Book )
 //NetPriceBook determines the net price of a book
 func (b Book) NetPriceBook() int {
 	dollarAmt := b.PriceCents / centsPerDollar
@@ -61,7 +58,12 @@ func (c Catalog) GetBookDetails(id int) string {
 
 	if found {
 		return fmt.Sprintf("%s by %s", book.Title, book.Author)
-	} else {
-		return "Book not found"
 	}
+	return "Book not found"
+
+}
+
+//SetTitle sets the title of a book
+func (b *Book) SetTitle(title string) {
+	b.Title = title
 }
