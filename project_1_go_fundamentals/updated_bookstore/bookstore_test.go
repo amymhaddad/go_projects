@@ -161,3 +161,18 @@ func TestSetPriceCents(t *testing.T) {
 		t.Errorf("want: %d, got: %d", want, got)
 	}
 }
+
+func TestAddBook(t *testing.T) {
+	t.Parallel()
+
+	c := bookstore.Catalog{}
+	book := bookstore.Book{ID: 4, Title: "T4", Author: "A4", Copies: 1}
+	want := []bookstore.Book{book}
+
+	catalog.AddBook(book)
+	got := c.GetAllBooks()
+
+	if !cmp.Equal(want, got) {
+		t.Error(cmp.Diff(want, got))
+	}
+}

@@ -26,6 +26,12 @@ func (b Book) NetPriceBook() int {
 	return dollarAmt * b.DiscountPercent
 }
 
+//AddBook adds a book to the catalog
+func (c *Catalog) AddBook(b Book) {
+	(*c)[b.ID] = b
+
+}
+
 //GetAllBooks returns a slice of books
 func (c Catalog) GetAllBooks() []Book {
 	allBooks := []Book{}
