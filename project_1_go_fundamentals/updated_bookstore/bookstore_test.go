@@ -136,7 +136,7 @@ func TestSetTitle(t *testing.T) {
 	b := bookstore.Book{
 		Title: "T1",
 	}
-	
+
 	b.SetTitle("New Book")
 	want := "New Book"
 	got := b.Title
@@ -145,4 +145,19 @@ func TestSetTitle(t *testing.T) {
 		t.Errorf("want: %s, got: %s", want, got)
 	}
 
+}
+
+func TestSetPriceCents(t *testing.T) {
+	t.Parallel()
+
+	b := bookstore.Book{
+		PriceCents: 500,
+	}
+	b.SetPriceCents(600)
+	want := 600
+	got := b.PriceCents
+
+	if want != got {
+		t.Errorf("want: %d, got: %d", want, got)
+	}
 }

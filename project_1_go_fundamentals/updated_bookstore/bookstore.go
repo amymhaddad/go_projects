@@ -16,6 +16,7 @@ type Book struct {
 
 //Catalog contains all books
 type Catalog map[int]Book
+
 const centsPerDollar = 100
 const saleDiscount float64 = .50
 
@@ -66,4 +67,9 @@ func (c Catalog) GetBookDetails(id int) string {
 //SetTitle sets the title of a book
 func (b *Book) SetTitle(title string) {
 	b.Title = title
+}
+
+//SetPriceCents sets the price of a book
+func (b *Book) SetPriceCents(value int) {
+	b.PriceCents = value
 }
