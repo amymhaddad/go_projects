@@ -166,11 +166,40 @@ func TestSetPriceCents(t *testing.T) {
 
 }
 
+//The test fails UNLESS I get an error
 func TestInvalidSetPriceCents(t *testing.T) {
 	t.Parallel()
 
 	b := bookstore.Book{Title: "T5", PriceCents: 100}
 	err := b.SetPriceCents(-100)
+	if err == nil {
+		t.Fatal(err)
+	}
+}
+
+func TestSetCategory(t *testing.T) {
+	t.Parallel()
+
+	b := bookstore.Book{Title: "T6"}
+	want := "Autobiography"
+	err := b.SetCategory("Autobiography")
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	got := b.category
+	if want != got {
+		t.Errorf("want: %s, got: %s", want, got)
+	}
+}
+
+func TestInvalidSetCategory(t *testing.T) {
+	t.Parallel()
+
+	b := bookstore.Book{Title: "T6"}
+	err := b.SetCategory("Fiction")
+
 	if err == nil {
 		t.Fatal(err)
 	}

@@ -13,6 +13,7 @@ type Book struct {
 	ID              int
 	PriceCents      int
 	DiscountPercent int
+	category        string
 }
 
 //Catalog contains all books
@@ -20,6 +21,15 @@ type Catalog map[int]Book
 
 const centsPerDollar = 100
 const saleDiscount float64 = .50
+
+//SetCategory sets the category of a book
+func (b *Book) SetCategory(category string) error {
+	if category != "Autobiography" {
+		return errors.New("invalid category")
+	}
+	b.category = category
+	return nil
+}
 
 //NetPriceBook determines the net price of a book
 func (b Book) NetPriceBook() int {
