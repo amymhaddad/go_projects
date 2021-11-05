@@ -91,7 +91,7 @@ func TestGetBook(t *testing.T) {
 func TestBookDoesNotExist(t *testing.T) {
 	t.Parallel()
 
-	ID := 4
+	ID := 44
 	_, err := catalog.GetBook(ID)
 
 	if err == nil {
@@ -150,29 +150,45 @@ func TestSetTitle(t *testing.T) {
 func TestSetPriceCents(t *testing.T) {
 	t.Parallel()
 
-	b := bookstore.Book{
-		PriceCents: 500,
-	}
-	b.SetPriceCents(600)
-	want := 600
-	got := b.PriceCents
+	b := bookstore.Book{Title: "T5", PriceCents: 4000}
+	want := 3000
+	err := b.SetPriceCents(want)
 
+	//First check if there's an error. There will be an error if err is not nil. If that's the case, then terminate the program and pass in the err (the error message)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	got := b.PriceCents
 	if want != got {
 		t.Errorf("want: %d, got: %d", want, got)
 	}
+
 }
 
-func TestAddBook(t *testing.T) {
+func TestInvalidSetPriceCents(t *testing.T) {
 	t.Parallel()
 
-	c := bookstore.Catalog{}
-	book := bookstore.Book{ID: 4, Title: "T4", Author: "A4", Copies: 1}
-	want := []bookstore.Book{book}
-
-	catalog.AddBook(book)
-	got := c.GetAllBooks()
-
-	if !cmp.Equal(want, got) {
-		t.Error(cmp.Diff(want, got))
+	b := bookstore.Book{Title: "T5", PriceCents: 100}
+	err := b.SetPriceCents(-100)
+	if err == nil {
+		t.Fatal(err)
 	}
+
 }
+
+//
+// func TestAddBook(t *testing.T) {
+// 	t.Parallel()
+
+// 	c := bookstore.Catalog{}
+// 	book := bookstore.Book{ID: 4, Title: "T4", Author: "A4", Copies: 1}
+// 	want := []bookstore.Book{book}
+
+// 	catalog.AddBook(book)
+// 	got := c.GetAllBooks()
+
+// 	if !cmp.Equal(want, got) {
+// 		t.Error(cmp.Diff(want, got))
+// 	}
+// }

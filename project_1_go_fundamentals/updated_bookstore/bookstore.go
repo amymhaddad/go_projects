@@ -1,6 +1,7 @@
 package bookstore
 
 import (
+	"errors"
 	"fmt"
 )
 
@@ -26,11 +27,11 @@ func (b Book) NetPriceBook() int {
 	return dollarAmt * b.DiscountPercent
 }
 
-//AddBook adds a book to the catalog
-func (c *Catalog) AddBook(b Book) {
-	(*c)[b.ID] = b
+// //AddBook adds a book to the catalog
+// func (c *Catalog) AddBook(b Book) {
+// 	(*c)[b.ID] = b
 
-}
+// }
 
 //GetAllBooks returns a slice of books
 func (c Catalog) GetAllBooks() []Book {
@@ -76,6 +77,11 @@ func (b *Book) SetTitle(title string) {
 }
 
 //SetPriceCents sets the price of a book
-func (b *Book) SetPriceCents(value int) {
-	b.PriceCents = value
+func (b *Book) SetPriceCents(price int) error {
+	if price <= 0 {
+		return errors.New("invalid price")
+	}
+
+	b.PriceCents = price
+	return nil
 }
