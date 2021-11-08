@@ -27,8 +27,13 @@ func (b *Book) SetCategory(category string) error {
 	if category != "Autobiography" {
 		return errors.New("invalid category")
 	}
-	b.category = category
+	b.category = category 
 	return nil
+}
+
+//Category returns the book category
+func (b Book) Category() string {
+	return b.category
 }
 
 //NetPriceBook determines the net price of a book
@@ -37,11 +42,14 @@ func (b Book) NetPriceBook() int {
 	return dollarAmt * b.DiscountPercent
 }
 
-// //AddBook adds a book to the catalog
-// func (c *Catalog) AddBook(b Book) {
-// 	(*c)[b.ID] = b
 
-// }
+//AddBook adds a book to the catalog
+func (c *Catalog) AddBook(b Book) {
+	//Can imlicitly dereference a struct -- but dealing w/map. So I need to explicitly deference it.
+	//This syntax says: (*c) -- get me the thing that catelog points to (the map). Then, set a key to it catalog[book.ID] = b
+	(*c)[b.ID] = b
+
+}
 
 //GetAllBooks returns a slice of books
 func (c Catalog) GetAllBooks() []Book {
@@ -62,12 +70,6 @@ func (c Catalog) GetBook(ID int) (Book, error) {
 		return Book{}, fmt.Errorf("book ID %d doesn't exist", ID)
 	}
 	return book, nil
-}
-
-//SalePrice returns the sale price of a book
-func (b Book) SalePrice() float64 {
-	discountPrice := float64(b.PriceCents) * saleDiscount
-	return discountPrice / centsPerDollar
 }
 
 //GetBookDetails gets the details for a particular book based on the book ID
@@ -95,3 +97,9 @@ func (b *Book) SetPriceCents(price int) error {
 	b.PriceCents = price
 	return nil
 }
+
+//SalePrice returns the sale price of a book
+func (b Book) SalePrice() float64 {
+	discountPrice := float64(b.PriceCents) * saleDiscount
+	return discountPrice / centsPerDollar
+}	

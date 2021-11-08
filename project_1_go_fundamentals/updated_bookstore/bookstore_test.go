@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
 var catalog = bookstore.Catalog{
@@ -65,7 +66,7 @@ func TestGetAllBooks(t *testing.T) {
 		return got[i].ID < got[j].ID
 	})
 
-	if !cmp.Equal(want, got) {
+	if !cmp.Equal(want, got, cmpopts.IgnoreUnexported(bookstore.Book{})) {
 		t.Error(cmp.Diff(want, got))
 	}
 
@@ -82,7 +83,7 @@ func TestGetBook(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !cmp.Equal(want, got) {
+	if !cmp.Equal(want, got, cmpopts.IgnoreUnexported(bookstore.Book{})) {
 		t.Error(cmp.Diff(want, got))
 	}
 
@@ -188,7 +189,7 @@ func TestSetCategory(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	got := b.category
+	got := b.Category()
 	if want != got {
 		t.Errorf("want: %s, got: %s", want, got)
 	}
@@ -206,18 +207,17 @@ func TestInvalidSetCategory(t *testing.T) {
 
 }
 
-//
-// func TestAddBook(t *testing.T) {
-// 	t.Parallel()
+func TestAddBook(t *testing.T) {
+	t.Parallel()
 
-// 	c := bookstore.Catalog{}
-// 	book := bookstore.Book{ID: 4, Title: "T4", Author: "A4", Copies: 1}
-// 	want := []bookstore.Book{book}
+	c := bookstore.Catalog{}
+	book := bookstore.Book{ID: 4, Title: "T4", Author: "A4", Copies: 1}
+	c.AddBook(book)
 
-// 	catalog.AddBook(book)
-// 	got := c.GetAllBooks()
+	want := []bookstore.Book{book}
+	got := c.GetAllBooks()
 
-// 	if !cmp.Equal(want, got) {
-// 		t.Error(cmp.Diff(want, got))
-// 	}
-// }
+	if !cmp.Equal(want, got, cmpopts.IgnoreUnexported(bookstore.Book{})) {
+		t.Error(cmp.Diff(want, got))
+	}
+}
