@@ -24,7 +24,6 @@ func TestBook(t *testing.T) {
 		Copies:          1,
 		ID:              1,
 		PriceCents:      5,
-		DiscountPercent: 500,
 	}
 
 }
@@ -40,15 +39,16 @@ func TestNetPriceBook(t *testing.T) {
 		Copies:          1,
 		ID:              1,
 		PriceCents:      4000,
-		DiscountPercent: 25,
 	}
 
 	dollarAmt := b.PriceCents / centsPerDollar
-	want := dollarAmt * b.DiscountPercent
+	b.SetDiscountPercent(5) 
+	discountPercent := bookstore.Discount(b)
+	want := dollarAmt * discountPercent
 	got := b.NetPriceBook()
 
 	if want != got {
-		t.Errorf("price %d, after %d%% discount want: net %d, got: %d", dollarAmt, b.DiscountPercent, want, got)
+		t.Errorf("price %d, after %d%% discount want: net %d, got: %d", dollarAmt, discountPercent, want, got)
 	}
 }
 
@@ -178,6 +178,7 @@ func TestInvalidSetPriceCents(t *testing.T) {
 	}
 }
 
+//This method validates IF a category is valid or not, so it returns an error (or nil)
 func TestSetCategory(t *testing.T) {
 	t.Parallel()
 
@@ -195,12 +196,14 @@ func TestSetCategory(t *testing.T) {
 	}
 }
 
+//Create another test to test for invalid category 
 func TestInvalidSetCategory(t *testing.T) {
 	t.Parallel()
 
 	b := bookstore.Book{Title: "T6"}
 	err := b.SetCategory("Fiction")
 
+	//TEsting the errr case SO if I don't get an error (ie, I get nil), then throw an error and fail 
 	if err == nil {
 		t.Fatal(err)
 	}
@@ -220,4 +223,22 @@ func TestAddBook(t *testing.T) {
 	if !cmp.Equal(want, got, cmpopts.IgnoreUnexported(bookstore.Book{})) {
 		t.Error(cmp.Diff(want, got))
 	}
+}
+
+func TestDiscountPercent(t *testing.T) {
+	t.Parallel()
+
+	b := bookstore.Book{ID: 4, Title: "T4", Author: "A4", Copies: 1}
+	want := 4
+	err := b.SetDiscountPercent(want)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	got := bookstore.Discount(b)
+
+	if want != got {
+		t.Errorf("want: %d, got: %d", want, got)
+	}
+
 }
