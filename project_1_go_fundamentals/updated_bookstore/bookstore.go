@@ -26,15 +26,18 @@ const saleDiscount float64 = .50
 //SetCategory sets the category of a book
 func (b *Book) SetCategory(category string) error {
 	if category != "Autobiography" {
-		//OR use fmt.Errorf("invalid category %q", c) to use verbs to specify message 
+		//OR use fmt.Errorf("invalid category %q", c) to use verbs to specify message
 		return errors.New("invalid category")
 	}
 	b.category = category
 	return nil
 }
 
+//Decide if method is ptr or value by asking: is the point of the method to modify the type (ie, Book)? Here, the answer is no
+//I just want to get the value of it
 //Category returns the book category
 func (b Book) Category() string {
+	//I can access the catgory field
 	return b.category
 }
 
@@ -118,13 +121,14 @@ The solution is accessor methods w/unexported values
 
 //SetDiscountPercent sets a discount percent on a book
 func (b *Book) SetDiscountPercent(percent int) error {
-	if percent < 0 || percent > 100 {
-		return errors.New("invalid percent")
+	if percent <= 0 || percent > 100 {
+		return fmt.Errorf("%q is an invalid percent", percent)
 	}
 	b.discountPercent = percent
 	return nil
 }
 
-func Discount(b Book) int {
+//Discount returns the discount set on a book
+func (b Book) Discount() int {
 	return b.discountPercent
 }

@@ -19,11 +19,11 @@ func TestBook(t *testing.T) {
 	t.Parallel()
 
 	_ = bookstore.Book{
-		Title:           "T1",
-		Author:          "A1",
-		Copies:          1,
-		ID:              1,
-		PriceCents:      5,
+		Title:      "T1",
+		Author:     "A1",
+		Copies:     1,
+		ID:         1,
+		PriceCents: 5,
 	}
 
 }
@@ -34,16 +34,17 @@ func TestNetPriceBook(t *testing.T) {
 	centsPerDollar := 100
 
 	b := bookstore.Book{
-		Title:           "T1",
-		Author:          "A1",
-		Copies:          1,
-		ID:              1,
-		PriceCents:      4000,
+		Title:      "T1",
+		Author:     "A1",
+		Copies:     1,
+		ID:         1,
+		PriceCents: 4000,
 	}
 
 	dollarAmt := b.PriceCents / centsPerDollar
-	b.SetDiscountPercent(5) 
-	discountPercent := bookstore.Discount(b)
+	b.SetDiscountPercent(5)
+	discountPercent := b.Discount()
+	//discountPercent := bookstore.Discount(b)
 	want := dollarAmt * discountPercent
 	got := b.NetPriceBook()
 
@@ -183,32 +184,37 @@ func TestSetCategory(t *testing.T) {
 	t.Parallel()
 
 	b := bookstore.Book{Title: "T6"}
-	want := "Autobiography"
 	err := b.SetCategory("Autobiography")
 
 	if err != nil {
 		t.Fatal(err)
 	}
-
+	//Testing the error case. IF I don't get an error w/this input (ie, I get nil) then throw and error and fail
+	err = b.SetCategory("bogus")
+	if err == nil {
+		t.Fatal(err)
+	}
+	//Check if the category was set properly
 	got := b.Category()
+	want := "Autobiography"
 	if want != got {
 		t.Errorf("want: %s, got: %s", want, got)
 	}
 }
 
-//Create another test to test for invalid category 
-func TestInvalidSetCategory(t *testing.T) {
-	t.Parallel()
+//Create another test to test for invalid category
+// func TestInvalidSetCategory(t *testing.T) {
+// 	t.Parallel()
 
-	b := bookstore.Book{Title: "T6"}
-	err := b.SetCategory("Fiction")
+// 	b := bookstore.Book{Title: "T6"}
+// 	err := b.SetCategory("Fiction")
 
-	//TEsting the errr case SO if I don't get an error (ie, I get nil), then throw an error and fail 
-	if err == nil {
-		t.Fatal(err)
-	}
+// 	//TEsting the errr case SO if I don't get an error (ie, I get nil), then throw an error and fail
+// 	if err == nil {
+// 		t.Fatal(err)
+// 	}
 
-}
+// }
 
 func TestAddBook(t *testing.T) {
 	t.Parallel()
@@ -228,14 +234,20 @@ func TestAddBook(t *testing.T) {
 func TestDiscountPercent(t *testing.T) {
 	t.Parallel()
 
-	b := bookstore.Book{ID: 4, Title: "T4", Author: "A4", Copies: 1}
-	want := 4
-	err := b.SetDiscountPercent(want)
+	b := bookstore.Book{Title: "New"}
+
+	err := b.SetDiscountPercent(10)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	got := bookstore.Discount(b)
+	err = b.SetDiscountPercent(150)
+	if err == nil {
+		t.Fatal(err)
+	}
+
+	want := 10
+	got := b.Discount()
 
 	if want != got {
 		t.Errorf("want: %d, got: %d", want, got)
