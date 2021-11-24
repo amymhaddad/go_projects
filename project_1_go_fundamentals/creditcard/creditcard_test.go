@@ -17,7 +17,8 @@ func TestNewValid(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	got := card.Number
+	//This is a method call to get a number bc the nubmer field is NOT exported
+	got := card.GetNum()
 	if want != got {
 		t.Errorf("want: %s, got: %s", want, got)
 	}
@@ -36,24 +37,32 @@ func TestInValid(t *testing.T) {
 func TestSetNum(t *testing.T) {
 	t.Parallel()
 
-	num := "1"
-	c, _ := creditcard.New(num)
+	want := "12"
+	//Need to call New() to get a new creditcard number
+	c, err := creditcard.New(want)
 
-	err := c.SetNum("")
-
+	//First check if I have an error value once I get the new cc number
 	if err != nil {
-		t.Fatal(err)
+		t.Error(err)
 	}
 
-	err = c.SetNum("22")
-
+	//Take the returned cc type and set a number to it.
+	//Checking invalid case first
+	err = c.SetNum("")
 	if err == nil {
-		t.Fatal(err)
+		t.Error("want error on setting invalid number, but got nil")
 	}
 
-	want := creditcard.New(num)
-	got, _ := want.GetNum()
+	want = "aa"
+	//Check valid case
+	err = c.SetNum(want)
 
+ 	//If I err is NOT a nil value, then there's a problem
+	if err != nil {
+		t.Error(err)
+	}
+
+	got := c.GetNum()
 	if want != got {
 		t.Errorf("want %v, got %v", want, got)
 	}
