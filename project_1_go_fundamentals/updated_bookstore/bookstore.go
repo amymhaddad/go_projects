@@ -19,25 +19,27 @@ type Book struct {
 //Catalog contains all books
 type Catalog map[int]Book
 
-const centsPerDollar = 100
-const saleDiscount float64 = .50
+const (
+	centsPerDollar = 100
+	saleDiscount float64 = .50	
+)
+ 
 
-//This method validates IF a category is valid or not, so it returns an error (or nil). Use unexported field to control what is valid as a category
 //SetCategory sets the category of a book
 func (b *Book) SetCategory(category string) error {
-	if category != "Autobiography" {
-		//OR use fmt.Errorf("invalid category %q", c) to use verbs to specify message
+	if !validCategory(category) {
 		return errors.New("invalid category")
 	}
 	b.category = category
 	return nil
 }
 
-//Decide if method is ptr or value by asking: is the point of the method to modify the type (ie, Book)? Here, the answer is no
-//I just want to get the value of it
+func validCategory(c string) bool {
+	return c == "Autobiography" 
+}
+
 //Category returns the book category
-func (b Book) Category() string {
-	//I can access the catgory field
+func (b Book) GetCategory() string {
 	return b.category
 }
 
@@ -49,8 +51,6 @@ func (b Book) NetPriceBook() int {
 
 //AddBook adds a book to the catalog
 func (c *Catalog) AddBook(b Book) {
-	//Can imlicitly dereference a struct -- but dealing w/map. So I need to explicitly deference it.
-	//This syntax says: (*c) -- get me the thing that catelog points to (the map). Then, set a key to it catalog[book.ID] = b
 	(*c)[b.ID] = b
 
 }
@@ -70,7 +70,6 @@ func (c Catalog) GetBook(ID int) (Book, error) {
 
 	book, found := c[ID]
 	if !found {
-		//use ErrorF to print a customized error
 		return Book{}, fmt.Errorf("book ID %d doesn't exist", ID)
 	}
 	return book, nil
@@ -108,20 +107,9 @@ func (b Book) SalePrice() float64 {
 	return discountPrice / centsPerDollar
 }
 
-/*
--A user can directly set the DiscountPercent -- its an exportable field
-BUT what if I don't want users to do this? I want to add some kind of parameters on the value that they can set. For ex, I don't wnat
-negative discount percents.
-
-I could create a method, BUT users aren't mandated to use it. They could use it OR they could continue to use the struct and set the value that they'd like.
-
-The solution is accessor methods w/unexported values
-
-*/
-
 //SetDiscountPercent sets a discount percent on a book
 func (b *Book) SetDiscountPercent(percent int) error {
-	if percent <= 0 || percent > 100 {
+	if invalidDiscount(percent) {
 		return fmt.Errorf("%q is an invalid percent", percent)
 	}
 	b.discountPercent = percent
@@ -131,4 +119,8 @@ func (b *Book) SetDiscountPercent(percent int) error {
 //Discount returns the discount set on a book
 func (b Book) Discount() int {
 	return b.discountPercent
+}
+
+func invalidDiscount(percent int) bool {
+	return percent <= 0 || percent > 100
 }

@@ -9,6 +9,8 @@ import (
 	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
+//cmp.Equal can't look up unexported fields, so I use 	"github.com/google/go-cmp/cmp/cmpopts" to ignore unexpected fields
+
 var catalog = bookstore.Catalog{
 	1: {ID: 1, Title: "T1", Author: "A1", Copies: 1},
 	2: {ID: 2, Title: "T2", Author: "A2", Copies: 1},
@@ -67,6 +69,7 @@ func TestGetAllBooks(t *testing.T) {
 		return got[i].ID < got[j].ID
 	})
 
+	//Note that I pass the value (bookstore.Book{}) that I want cmp.Equal to ignore the Book{}struct inorder to convey that I want to ignore the specific unexportd field
 	if !cmp.Equal(want, got, cmpopts.IgnoreUnexported(bookstore.Book{})) {
 		t.Error(cmp.Diff(want, got))
 	}
@@ -195,7 +198,7 @@ func TestSetCategory(t *testing.T) {
 		t.Fatal(err)
 	}
 	//Check if the category was set properly
-	got := b.Category()
+	got := b.GetCategory()
 	want := "Autobiography"
 	if want != got {
 		t.Errorf("want: %s, got: %s", want, got)
