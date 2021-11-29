@@ -187,37 +187,40 @@ func TestSetCategory(t *testing.T) {
 	t.Parallel()
 
 	b := bookstore.Book{Title: "T6"}
-	err := b.SetCategory("Autobiography")
 
-	if err != nil {
-		t.Fatal(err)
+	categories := []bookstore.Category{
+		bookstore.CategoryAutobiography,
+		bookstore.CategoryLargePrintRomance,
+		bookstore.CategoryParticlePhysics,
 	}
-	//Testing the error case. IF I don't get an error w/this input (ie, I get nil) then throw and error and fail
-	err = b.SetCategory("bogus")
-	if err == nil {
-		t.Fatal(err)
-	}
-	//Check if the category was set properly
-	got := b.GetCategory()
-	want := "Autobiography"
-	if want != got {
-		t.Errorf("want: %s, got: %s", want, got)
+
+	for _, category := range categories {
+		err := b.SetCategory(category)
+
+		if err != nil {
+			t.Fatal(err)
+		}
+		got := b.GetCategory()
+
+		if category != got {
+			t.Errorf("want category %q, got %q", category, got)
+		}
 	}
 }
 
-//Create another test to test for invalid category
-// func TestInvalidSetCategory(t *testing.T) {
-// 	t.Parallel()
+func TestSetInvalidCategory(t *testing.T) {
+	t.Parallel()
 
-// 	b := bookstore.Book{Title: "T6"}
-// 	err := b.SetCategory("Fiction")
+	b := bookstore.Book{Title: "T6"}
 
-// 	//TEsting the errr case SO if I don't get an error (ie, I get nil), then throw an error and fail
-// 	if err == nil {
-// 		t.Fatal(err)
-// 	}
+	//Try to set SetCategory to a value that doesn't correspond to one of my predefined categories
+	err := b.SetCategory(999)
 
-// }
+	if err == nil {
+		t.Fatal(err)
+	}
+
+}
 
 func TestAddBook(t *testing.T) {
 	t.Parallel()

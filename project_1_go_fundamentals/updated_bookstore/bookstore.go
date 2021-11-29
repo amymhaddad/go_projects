@@ -13,33 +13,50 @@ type Book struct {
 	ID              int
 	PriceCents      int
 	discountPercent int
-	category        string
+	category        Category
+}
+
+type Category int
+
+//Benefit of using consts is that package users can refer to the predefined constants - instead of arbirary strings
+//The compiler will pick up spelling errors
+//The iota constant is most useful when we want to declare a set of constants to represent the allowed values of something, but we don’t actually care what those values are
+//We just care that these values are different from each other
+const (
+	CategoryAutobiography Category = iota
+	CategoryLargePrintRomance
+	CategoryParticlePhysics
+)
+
+//Use a map to represent a set of data
+//IF a category is NOT in a map, return the zero value for the missing key -- and the zero value for a bool is false.
+var validCategory = map[Category]bool{
+	CategoryAutobiography:     true,
+	CategoryLargePrintRomance: true,
+	CategoryParticlePhysics:   true,
 }
 
 //Catalog contains all books
 type Catalog map[int]Book
 
 const (
-	centsPerDollar = 100
-	saleDiscount float64 = .50	
+	centsPerDollar         = 100
+	saleDiscount   float64 = .50
 )
- 
 
 //SetCategory sets the category of a book
-func (b *Book) SetCategory(category string) error {
-	if !validCategory(category) {
+func (b *Book) SetCategory(category Category) error {
+
+	if !validCategory[category] {
 		return errors.New("invalid category")
 	}
 	b.category = category
 	return nil
 }
 
-func validCategory(c string) bool {
-	return c == "Autobiography" 
-}
 
 //Category returns the book category
-func (b Book) GetCategory() string {
+func (b Book) GetCategory() Category {
 	return b.category
 }
 
@@ -124,3 +141,4 @@ func (b Book) Discount() int {
 func invalidDiscount(percent int) bool {
 	return percent <= 0 || percent > 100
 }
+
