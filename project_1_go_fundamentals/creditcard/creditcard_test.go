@@ -14,17 +14,18 @@ func TestNewValid(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	//Use getter method to ensure that the vlue returned by New() contains the hnubmer I passed in
 	got := card.GetNum()
 	if want != got {
 		t.Errorf("want: %s, got: %s", want, got)
 	}
 }
 
-func TestInValid(t *testing.T) {
+func TestInvalid(t *testing.T) {
 	_, err := creditcard.New("")
 
 	if err == nil {
-		t.Fatal(err)
+		t.Fatal("want an empty card number, but got nil")
 	}
 }
 

@@ -15,6 +15,8 @@ func New(cardNumber string) (*card, error) {
 		return &card{}, fmt.Errorf("%s is an invalid value", cardNumber)
 	}
 
+	//This function returns a vaue of some type that we don't need to know the name of -- bc we don't use its name.
+	//Instead we call GetNumber() to get the value -- bc this method is exported. 
 	return &card{
 		number: cardNumber,
 	}, nil
