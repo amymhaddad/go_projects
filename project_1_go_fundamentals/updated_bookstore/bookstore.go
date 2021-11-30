@@ -16,20 +16,15 @@ type Book struct {
 	category        Category
 }
 
+//Category represents a book category
 type Category int
 
-//Benefit of using consts is that package users can refer to the predefined constants - instead of arbirary strings
-//The compiler will pick up spelling errors
-//The iota constant is most useful when we want to declare a set of constants to represent the allowed values of something, but we don’t actually care what those values are
-//We just care that these values are different from each other
 const (
 	CategoryAutobiography Category = iota
 	CategoryLargePrintRomance
 	CategoryParticlePhysics
 )
 
-//Use a map to represent a set of data
-//IF a category is NOT in a map, return the zero value for the missing key -- and the zero value for a bool is false.
 var validCategory = map[Category]bool{
 	CategoryAutobiography:     true,
 	CategoryLargePrintRomance: true,
